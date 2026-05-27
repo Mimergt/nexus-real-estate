@@ -58,6 +58,10 @@ const propertyImageUploadSchema = z.object({
   is_primary: z.boolean().optional().default(false),
 })
 
+const propertyImageReorderSchema = z.object({
+  image_ids: z.array(z.uuid()).min(1),
+})
+
 const parseAgencyId = (value: string | undefined) => {
   const parsed = agencyIdSchema.safeParse(value)
   return parsed.success ? parsed.data : null
@@ -864,6 +868,66 @@ app.delete('/v1/properties/:propertyId/images/:imageId', async (c) => {
     .run()
 
   return c.json({ ok: true, deleted_id: found.id })
+})
+
+app.patch('/v1/properties/:propertyId/images/reorder', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const propertyId = c.req.param('propertyId')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(propertyId).success) {
+    return c.json({ ok: false, error: 'invalid_property_id' }, 400)
+  }
+
+  const body = await c.req.json()
+  const parsedBody = propertyImageReorderSchema.safeParse(body)
+
+  if (!parsedBody.success) {
+    return c.json({ ok: false, error: 'invalid_payload', details: parsedBody.error.flatten() }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const existing = await db
+    .prepare('select id from property_images where property_id = ? and agency_id = ?')
+    .bind(propertyId, agencyId)
+    .all<{ id: string }>()
+
+  const existingIds = new Set((existing.results ?? []).map((row) => row.id))
+  const receivedIds = parsedBody.data.image_ids
+
+  if (existingIds.size !== receivedIds.length) {
+    return c.json({ ok: false, error: 'image_count_mismatch' }, 400)
+  }
+
+  const allIdsMatch = receivedIds.every((id) => existingIds.has(id))
+
+  if (!allIdsMatch) {
+    return c.json({ ok: false, error: 'unknown_image_id_in_payload' }, 400)
+  }
+
+  const now = new Date().toISOString()
+  const statements = receivedIds.map((imageId, index) =>
+    db
+      .prepare('update property_images set sort_order = ?, updated_at = ? where id = ? and property_id = ? and agency_id = ?')
+      .bind(index + 1, now, imageId, propertyId, agencyId)
+  )
+
+  await db.batch(statements)
+
+  const ordered = await db
+    .prepare('select * from property_images where property_id = ? and agency_id = ? order by sort_order asc, created_at asc')
+    .bind(propertyId, agencyId)
+    .all<PropertyImageRow>()
+
+  return c.json({ ok: true, items: (ordered.results ?? []).map(mapPropertyImageRow) })
 })
 
 export default app

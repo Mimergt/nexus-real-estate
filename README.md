@@ -88,6 +88,7 @@ Usar .env.example como base. Campos actuales:
 - GET /v1/properties/:id/images
 - POST /v1/properties/:id/images
 - PATCH /v1/properties/:propertyId/images/:imageId/primary
+- PATCH /v1/properties/:propertyId/images/reorder
 - DELETE /v1/properties/:propertyId/images/:imageId
 
 Todos los endpoints de propiedades requieren header `x-agency-id` con UUID valido.

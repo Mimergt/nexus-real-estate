@@ -60,15 +60,15 @@ Marcar tareas a medida que se completen.
 - [x] Implementar relacion property -> informational_agent.
 
 Subtareas media
-- [ ] Implementar subida multiple a R2.
+- [x] Implementar subida multiple a R2.
 - [ ] Implementar drag/drop de imagenes.
-- [ ] Implementar ordenamiento de galeria.
-- [ ] Implementar imagen principal.
-- [ ] Implementar eliminacion segura de assets.
+- [x] Implementar ordenamiento de galeria.
+- [x] Implementar imagen principal.
+- [x] Implementar eliminacion segura de assets.
 
 ## Fase 6 - Agentes informativos
 - [x] Implementar CRUD de informational_agents.
-- [ ] Implementar selector de agente en propiedad.
+- [x] Implementar selector de agente en propiedad.
 - [ ] Mostrar tarjeta de agente en detalle de propiedad.
 
 ## Fase 7 - Portal publico inmobiliario

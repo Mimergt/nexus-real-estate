@@ -232,3 +232,30 @@ Siguientes pasos:
 - Integrar estos endpoints en panel web (UI de upload, orden y principal).
 - Implementar ordenamiento de galeria por sort_order desde frontend.
 - Avanzar con autenticacion para sustituir header x-agency-id.
+
+### Fecha: 2026-05-27
+Sesion: 008
+Resumen:
+Se conecto el panel web con la API para operacion real de agentes, propiedades e imagenes, y se agrego endpoint de reorder de galeria.
+
+Acciones ejecutadas:
+- Implementacion de endpoint PATCH /v1/properties/:propertyId/images/reorder.
+- Reemplazo del frontend boilerplate por panel operativo MVP conectado a API local.
+- UI para: crear agentes, asignar agente a propiedad, cargar imagenes, marcar principal, eliminar y reordenar.
+- Validacion de compilacion web + API sin errores.
+- Smoke tests de reorder con respuesta esperada para caso invalido y caso exitoso.
+
+Decisiones tomadas:
+- Se usa por ahora header x-agency-id fijo de demo en frontend local hasta integrar auth.
+- Reordenamiento de galeria en UI actual se hace con controles subir/bajar; drag/drop queda pendiente.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Implementar drag/drop real para galeria.
+- Consumir el panel desde entorno desplegado en Pages/Workers.
+- Iniciar autenticacion y contexto de agencia real.

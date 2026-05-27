@@ -63,6 +63,18 @@ const propertyImageReorderSchema = z.object({
   image_ids: z.array(z.uuid()).min(1),
 })
 
+const websiteSettingsPatchSchema = z.object({
+  logo_url: z.string().nullable().optional(),
+  primary_color: z.string().nullable().optional(),
+  secondary_color: z.string().nullable().optional(),
+  fonts: z.string().nullable().optional(),
+  hero_style: z.string().nullable().optional(),
+  layout_style: z.string().nullable().optional(),
+  default_chat_widget: z.string().nullable().optional(),
+  default_form_embed: z.string().nullable().optional(),
+  default_calendar_embed: z.string().nullable().optional(),
+})
+
 const parseAgencyId = (value: string | undefined) => {
   const parsed = agencyIdSchema.safeParse(value)
   return parsed.success ? parsed.data : null
@@ -126,6 +138,34 @@ type PropertyImageRow = {
   sort_order: number
   created_at: string
   updated_at: string
+}
+
+type WebsiteSettingsRow = {
+  id: string
+  agency_id: string
+  logo_url: string | null
+  primary_color: string | null
+  secondary_color: string | null
+  fonts: string | null
+  hero_style: string | null
+  layout_style: string | null
+  default_chat_widget: string | null
+  default_form_embed: string | null
+  default_calendar_embed: string | null
+  created_at: string
+  updated_at: string
+}
+
+type AgencyDashboardMetricsRow = {
+  total_properties: number | string | null
+  active_properties: number | string | null
+  featured_properties: number | string | null
+  published_properties: number | string | null
+  portfolio_value: number | string | null
+}
+
+type RecentPropertiesCountRow = {
+  recent_properties: number | string | null
 }
 
 const mapPropertyRow = (row: PropertyRow) => ({
@@ -197,6 +237,187 @@ app.get('/v1/validate/listing-type/:value', (c) => {
   }
 
   return c.json({ ok: true, value: parsed.data.value })
+})
+
+app.get('/v1/agency/dashboard', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const metrics = await db
+    .prepare(
+      `select
+        count(*) as total_properties,
+        sum(case when lower(status) in ('active', 'disponible', 'published') then 1 else 0 end) as active_properties,
+        sum(case when featured = 1 then 1 else 0 end) as featured_properties,
+        sum(case when published = 1 then 1 else 0 end) as published_properties,
+        coalesce(sum(price), 0) as portfolio_value
+      from properties
+      where agency_id = ?`
+    )
+    .bind(agencyId)
+    .first<AgencyDashboardMetricsRow>()
+
+  const recent = await db
+    .prepare(
+      `select count(*) as recent_properties
+      from properties
+      where agency_id = ?
+      and datetime(created_at) >= datetime('now', '-30 day')`
+    )
+    .bind(agencyId)
+    .first<RecentPropertiesCountRow>()
+
+  return c.json({
+    ok: true,
+    item: {
+      total_properties: Number(metrics?.total_properties ?? 0),
+      active_properties: Number(metrics?.active_properties ?? 0),
+      featured_properties: Number(metrics?.featured_properties ?? 0),
+      published_properties: Number(metrics?.published_properties ?? 0),
+      portfolio_value: Number(metrics?.portfolio_value ?? 0),
+      recent_properties_30d: Number(recent?.recent_properties ?? 0),
+    },
+  })
+})
+
+app.get('/v1/agency/settings', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const item = await db
+    .prepare('select * from website_settings where agency_id = ? limit 1')
+    .bind(agencyId)
+    .first<WebsiteSettingsRow>()
+
+  return c.json({
+    ok: true,
+    exists: Boolean(item),
+    item: item ?? {
+      id: null,
+      agency_id: agencyId,
+      logo_url: null,
+      primary_color: null,
+      secondary_color: null,
+      fonts: null,
+      hero_style: null,
+      layout_style: null,
+      default_chat_widget: null,
+      default_form_embed: null,
+      default_calendar_embed: null,
+      created_at: null,
+      updated_at: null,
+    },
+  })
+})
+
+app.patch('/v1/agency/settings', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  const body = await c.req.json()
+  const parsedBody = websiteSettingsPatchSchema.safeParse(body)
+
+  if (!parsedBody.success) {
+    return c.json({ ok: false, error: 'invalid_payload', details: parsedBody.error.flatten() }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const current = await db
+    .prepare('select * from website_settings where agency_id = ? limit 1')
+    .bind(agencyId)
+    .first<WebsiteSettingsRow>()
+
+  const now = new Date().toISOString()
+
+  if (!current) {
+    const id = crypto.randomUUID()
+    await db
+      .prepare(
+        `insert into website_settings (
+          id, agency_id, logo_url, primary_color, secondary_color, fonts,
+          hero_style, layout_style, default_chat_widget, default_form_embed,
+          default_calendar_embed, created_at, updated_at
+        ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .bind(
+        id,
+        agencyId,
+        parsedBody.data.logo_url ?? null,
+        parsedBody.data.primary_color ?? null,
+        parsedBody.data.secondary_color ?? null,
+        parsedBody.data.fonts ?? null,
+        parsedBody.data.hero_style ?? null,
+        parsedBody.data.layout_style ?? null,
+        parsedBody.data.default_chat_widget ?? null,
+        parsedBody.data.default_form_embed ?? null,
+        parsedBody.data.default_calendar_embed ?? null,
+        now,
+        now
+      )
+      .run()
+  } else {
+    const next = {
+      ...current,
+      ...parsedBody.data,
+      updated_at: now,
+    }
+
+    await db
+      .prepare(
+        `update website_settings set
+          logo_url = ?, primary_color = ?, secondary_color = ?, fonts = ?,
+          hero_style = ?, layout_style = ?, default_chat_widget = ?, default_form_embed = ?,
+          default_calendar_embed = ?, updated_at = ?
+        where agency_id = ?`
+      )
+      .bind(
+        next.logo_url ?? null,
+        next.primary_color ?? null,
+        next.secondary_color ?? null,
+        next.fonts ?? null,
+        next.hero_style ?? null,
+        next.layout_style ?? null,
+        next.default_chat_widget ?? null,
+        next.default_form_embed ?? null,
+        next.default_calendar_embed ?? null,
+        next.updated_at,
+        agencyId
+      )
+      .run()
+  }
+
+  const updated = await db
+    .prepare('select * from website_settings where agency_id = ? limit 1')
+    .bind(agencyId)
+    .first<WebsiteSettingsRow>()
+
+  return c.json({ ok: true, item: updated ?? null })
 })
 
 app.get('/v1/properties', async (c) => {

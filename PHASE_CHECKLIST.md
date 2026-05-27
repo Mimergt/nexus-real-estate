@@ -61,7 +61,7 @@ Marcar tareas a medida que se completen.
 
 Subtareas media
 - [x] Implementar subida multiple a R2.
-- [ ] Implementar drag/drop de imagenes.
+- [x] Implementar drag/drop de imagenes.
 - [x] Implementar ordenamiento de galeria.
 - [x] Implementar imagen principal.
 - [x] Implementar eliminacion segura de assets.

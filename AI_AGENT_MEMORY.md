@@ -259,3 +259,27 @@ Siguientes pasos:
 - Implementar drag/drop real para galeria.
 - Consumir el panel desde entorno desplegado en Pages/Workers.
 - Iniciar autenticacion y contexto de agencia real.
+
+### Fecha: 2026-05-27
+Sesion: 009
+Resumen:
+Se completo drag/drop real en galeria del panel web, conectado al endpoint de reorder existente.
+
+Acciones ejecutadas:
+- Implementacion de manejo drag start/over/drop/end en cards de imagenes.
+- Integracion de reorder desde frontend contra PATCH /v1/properties/:propertyId/images/reorder.
+- Estilos visuales para estado dragging y drag-over.
+- Validacion de compilacion web y typecheck API.
+
+Decisiones tomadas:
+- Se mantienen botones subir/bajar como fallback adicional mientras el drag/drop se estabiliza.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Desplegar panel y API en Cloudflare para pruebas fuera de localhost.
+- Iniciar autenticacion y contexto de agencia en frontend/backend.

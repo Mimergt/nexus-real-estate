@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
+import type { DragEvent } from 'react'
 import './App.css'
 
 type InformationalAgent = {
@@ -83,6 +84,8 @@ function App() {
   const [selectedPropertyId, setSelectedPropertyId] = useState('')
   const [status, setStatus] = useState('Panel listo')
   const [loading, setLoading] = useState(false)
+  const [dragImageId, setDragImageId] = useState<string | null>(null)
+  const [dragOverImageId, setDragOverImageId] = useState<string | null>(null)
 
   const [agentName, setAgentName] = useState('')
   const [agentPhone, setAgentPhone] = useState('')
@@ -303,6 +306,71 @@ function App() {
     }
   }
 
+  const onReorderImages = async (orderedImageIds: string[]) => {
+    if (!selectedPropertyId) {
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      await request(`/v1/properties/${selectedPropertyId}/images/reorder`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          image_ids: orderedImageIds,
+        }),
+      })
+
+      await loadImages(selectedPropertyId)
+      setStatus('Galeria reordenada')
+    } catch (error) {
+      setStatus(`Error reordenando: ${(error as Error).message}`)
+    } finally {
+      setLoading(false)
+      setDragImageId(null)
+      setDragOverImageId(null)
+    }
+  }
+
+  const onDragStartImage = (imageId: string) => {
+    setDragImageId(imageId)
+  }
+
+  const onDragOverImage = (event: DragEvent<HTMLElement>, imageId: string) => {
+    event.preventDefault()
+    if (dragImageId && dragImageId !== imageId) {
+      setDragOverImageId(imageId)
+    }
+  }
+
+  const onDropImage = async (imageId: string) => {
+    if (!dragImageId || dragImageId === imageId) {
+      setDragImageId(null)
+      setDragOverImageId(null)
+      return
+    }
+
+    const fromIndex = propertyImages.findIndex((item) => item.id === dragImageId)
+    const toIndex = propertyImages.findIndex((item) => item.id === imageId)
+
+    if (fromIndex < 0 || toIndex < 0) {
+      setDragImageId(null)
+      setDragOverImageId(null)
+      return
+    }
+
+    const reordered = [...propertyImages]
+    const [moved] = reordered.splice(fromIndex, 1)
+    reordered.splice(toIndex, 0, moved)
+
+    await onReorderImages(reordered.map((item) => item.id))
+  }
+
+  const onDragEndImage = () => {
+    setDragImageId(null)
+    setDragOverImageId(null)
+  }
+
   return (
     <main className="panel-shell">
       <header className="topbar">
@@ -398,6 +466,7 @@ function App() {
 
       <section className="card">
         <h2>Galeria de Propiedad</h2>
+        <p className="drag-help">Arrastra y suelta tarjetas para reordenar la galeria.</p>
 
         <label className="upload-zone">
           <input
@@ -412,7 +481,17 @@ function App() {
 
         <ul className="image-grid">
           {propertyImages.map((image, index) => (
-            <li key={image.id} className="image-card">
+            <li
+              key={image.id}
+              className={`image-card${dragImageId === image.id ? ' dragging' : ''}${
+                dragOverImageId === image.id ? ' drag-over' : ''
+              }`}
+              draggable={!loading}
+              onDragStart={() => onDragStartImage(image.id)}
+              onDragOver={(event) => onDragOverImage(event, image.id)}
+              onDrop={() => void onDropImage(image.id)}
+              onDragEnd={onDragEndImage}
+            >
               <img src={image.image_url} alt="Preview" />
               <div className="image-info">
                 <small>{image.object_key.split('/').pop()}</small>

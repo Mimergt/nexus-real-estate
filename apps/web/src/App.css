@@ -142,6 +142,12 @@ button:disabled {
   color: #6b4d2e;
 }
 
+.drag-help {
+  margin: 0 0 0.7rem;
+  color: #755a39;
+  font-size: 0.9rem;
+}
+
 .image-grid {
   margin: 1rem 0 0;
   padding: 0;
@@ -156,6 +162,18 @@ button:disabled {
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.image-card.dragging {
+  opacity: 0.62;
+  transform: scale(0.98);
+}
+
+.image-card.drag-over {
+  border-color: #8a5c2f;
+  box-shadow: 0 8px 24px rgba(49, 34, 16, 0.14);
+  transform: translateY(-2px);
 }
 
 .image-card img {

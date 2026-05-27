@@ -306,3 +306,29 @@ Bloqueos:
 Siguientes pasos:
 - Mostrar estado actual de lo construido en web/API para definir ajustes de interfaz.
 - Ejecutar despliegue inicial a Cloudflare Pages y Worker.
+
+### Fecha: 2026-05-27
+Sesion: 011
+Resumen:
+Se completo despliegue inicial de API y frontend en Cloudflare para comenzar revision visual del GUI.
+
+Acciones ejecutadas:
+- Deploy API Worker exitoso: https://nexus-re-api.epicgt.workers.dev
+- Deploy Pages exitoso: https://f5ccb045.nexus-re-web.pages.dev
+- Configuracion de CORS en API para consumo cross-origin desde frontend.
+- Frontend ajustado para usar VITE_API_BASE_URL en build de despliegue.
+- Verificacion API remota en /health y /v1/bootstrap.
+
+Decisiones tomadas:
+- Se mantiene super admin temporal para QA de interfaz; credenciales se manejaran fuera del repositorio como secreto operativo.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno critico. Verificacion con curl al dominio Pages fallo por TLS local, pero deployment aparece exitoso en wrangler pages deployment list.
+
+Siguientes pasos:
+- Validar GUI directamente en navegador sobre URL Pages desplegada.
+- Probar CRUD basico end-to-end desde entorno desplegado.
+- Continuar ajustes visuales por pantalla segun feedback.

@@ -41,7 +41,7 @@ type PropertyImage = {
   sort_order: number
 }
 
-const apiBase = 'http://localhost:8787'
+const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8787'
 const demoAgencyId = '11111111-1111-4111-8111-111111111111'
 
 const request = async <T,>(path: string, options?: RequestInit): Promise<T> => {

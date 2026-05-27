@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 import { z } from 'zod'
 import { listingTypeSchema } from '@nexus-re/shared'
 
@@ -157,6 +158,15 @@ const decodeBase64 = (encoded: string) => {
 const sanitizeFilename = (filename: string) => filename.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase()
 
 const app = new Hono<{ Bindings: Bindings }>()
+
+app.use(
+  '*',
+  cors({
+    origin: '*',
+    allowHeaders: ['Content-Type', 'x-agency-id'],
+    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  }),
+)
 
 app.get('/health', (c) => {
   return c.json({ ok: true, service: 'nexus-re-api' })

@@ -2,6 +2,7 @@ name = "nexus-re-api"
 main = "src/index.ts"
 compatibility_date = "2026-05-27"
 workers_dev = true
+account_id = "db8d33d5dfbdf640b40aa3c13b2c2927"
 
 [observability]
 enabled = true

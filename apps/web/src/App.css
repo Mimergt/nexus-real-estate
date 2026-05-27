@@ -27,6 +27,17 @@ svg {
   height: 24px;
   border-radius: 7px;
 }
+.avatar-menu button {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(162, 178, 223, 0.16);
+  background: transparent;
+  color: #d3defb;
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
 
 .brand-wordmark {
   width: 148px;
@@ -240,12 +251,72 @@ svg {
   top: calc(100% + 8px);
   right: 0;
   width: 240px;
+
+.agency-dashboard-screen.sidebar-collapsed {
+  grid-template-columns: 76px 1fr;
+}
   border-radius: 10px;
   border: 1px solid rgba(162, 178, 223, 0.36);
   background: rgba(14, 21, 37, 0.96);
   box-shadow: 0 14px 28px rgba(3, 8, 19, 0.48);
   overflow: hidden;
   z-index: 4;
+  background: rgba(16, 21, 33, 0.96);
+  padding: 16px 12px 14px;
+  transition: width 0.2s ease, padding 0.2s ease;
+}
+
+.left-sidebar.collapsed {
+  padding: 14px 10px;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.sidebar-collapse-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(157, 174, 219, 0.16);
+  background: rgba(40, 48, 68, 0.66);
+  color: #d8e4ff;
+  cursor: pointer;
+}
+
+.sidebar-collapse-btn:hover {
+  background: rgba(60, 72, 98, 0.88);
+  border-color: rgba(177, 194, 240, 0.34);
+}
+
+.collapsed .brand-wordmark,
+.collapsed .nav-label,
+.collapsed .sidebar-cta-label,
+.collapsed .text-link-btn {
+  display: none;
+}
+
+.collapsed .brand-row {
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.collapsed .sidebar-nav button,
+.collapsed .primary-side-btn {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.collapsed .sidebar-footer {
+  justify-items: center;
+}
+
+.collapsed .text-link-btn {
+  padding: 0;
 }
 
 .avatar-menu button {
@@ -429,6 +500,7 @@ svg {
   color: #d4def7;
   display: inline-grid;
   place-items: center;
+  flex-shrink: 0;
 }
 
 .sidebar-footer {
@@ -462,9 +534,9 @@ svg {
 }
 
 .main-panel {
-  padding: 14px 18px 18px;
+  padding: 12px 18px 16px;
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .topbar {
@@ -473,7 +545,7 @@ svg {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding-bottom: 8px;
+  padding-bottom: 7px;
 }
 
 .topbar .search-shell {
@@ -521,7 +593,8 @@ svg {
   justify-content: space-between;
   align-items: flex-start;
   gap: 14px;
-  padding-top: 2px;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .hero-section h1 {
@@ -541,21 +614,21 @@ svg {
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .stat-card {
-  background: linear-gradient(180deg, rgba(36, 43, 61, 0.84), rgba(27, 34, 53, 0.74));
-  border: 1px solid rgba(157, 178, 231, 0.15);
+  background: linear-gradient(180deg, rgba(31, 37, 53, 0.96), rgba(24, 30, 45, 0.92));
+  border: 1px solid rgba(157, 178, 231, 0.12);
   border-radius: 14px;
   padding: 14px 16px;
   min-height: 108px;
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(167, 188, 241, 0.28);
-  box-shadow: 0 18px 36px rgba(5, 11, 24, 0.24);
+  transform: translateY(-1px);
+  border-color: rgba(167, 188, 241, 0.22);
+  box-shadow: 0 12px 26px rgba(5, 11, 24, 0.18);
 }
 
 .stat-card-accent {
@@ -624,8 +697,8 @@ svg {
 }
 
 .portfolio-shell {
-  background: rgba(24, 33, 52, 0.72);
-  border: 1px solid rgba(153, 172, 221, 0.18);
+  background: rgba(24, 33, 52, 0.86);
+  border: 1px solid rgba(153, 172, 221, 0.14);
   border-radius: 14px;
   overflow: hidden;
 }
@@ -635,7 +708,7 @@ svg {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px 12px;
+  padding: 12px 16px 10px;
   border-bottom: 1px solid rgba(148, 166, 214, 0.12);
 }
 
@@ -657,8 +730,8 @@ svg {
 }
 
 .ghost-filter-btn {
-  border: 1px solid rgba(152, 174, 226, 0.22);
-  background: rgba(40, 48, 68, 0.58);
+  border: 1px solid rgba(152, 174, 226, 0.18);
+  background: rgba(40, 48, 68, 0.64);
   color: #c8d7ff;
   border-radius: 9px;
   padding: 8px 10px;
@@ -675,7 +748,7 @@ svg {
   display: grid;
   grid-template-columns: 1.9fr 0.9fr 0.9fr 0.8fr 0.9fr;
   gap: 10px;
-  padding: 11px 16px;
+  padding: 10px 16px;
   text-transform: uppercase;
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.08em;
@@ -695,12 +768,12 @@ svg {
   grid-template-columns: 1.9fr 0.9fr 0.9fr 0.8fr 0.9fr;
   gap: 10px;
   align-items: center;
-  padding: 12px 16px;
+  padding: 11px 16px;
   border-bottom: 1px solid rgba(148, 166, 214, 0.08);
 }
 
 .table-row:hover {
-  background: rgba(71, 85, 125, 0.12);
+  background: rgba(94, 109, 150, 0.16);
 }
 
 .property-cell {
@@ -750,6 +823,11 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.views-badge svg {
+  width: 14px;
+  height: 14px;
 }
 
 .actions-cell {
@@ -833,6 +911,10 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .agency-dashboard-screen.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
   .left-sidebar {
     border-right: none;
     border-bottom: 1px solid rgba(145, 162, 203, 0.16);
@@ -863,6 +945,13 @@ svg {
     position: static;
     margin-top: 12px;
   }
+
+  .collapsed .brand-wordmark,
+  .collapsed .nav-label,
+  .collapsed .sidebar-cta-label,
+  .collapsed .text-link-btn {
+    display: inline;
+  }
 }
 
 @media (max-width: 760px) {
@@ -887,8 +976,24 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .brand-row {
+    margin-bottom: 12px;
+  }
+
+  .sidebar-collapse-btn {
+    display: none;
+  }
+
   .hero-copy h1,
   .hero-section h1 {
     font-size: 32px;
+  }
+
+  .super-admin-screen {
+    padding: 12px;
+  }
+
+  .main-panel {
+    padding: 12px 0 16px;
   }
 }

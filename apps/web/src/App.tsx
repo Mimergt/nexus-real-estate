@@ -196,14 +196,6 @@ function SparklineIcon() {
   )
 }
 
-function MoneyIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm0 1.5v1A2.5 2.5 0 0 0 6.5 11h11A2.5 2.5 0 0 0 20 8.5v-1H4Zm16 9v-1A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5v1h16ZM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" />
-    </svg>
-  )
-}
-
 function EyeIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -218,6 +210,7 @@ function App() {
   const [agencyQuery, setAgencyQuery] = useState('')
   const [activeTab, setActiveTab] = useState<'agencies' | 'global'>('agencies')
   const [activeNav, setActiveNav] = useState<'dashboard' | 'properties' | 'settings'>('properties')
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [isAvatarMenuOpen, setIsAvatarMenuOpen] = useState(false)
   const [properties, setProperties] = useState<Property[]>([])
   const [metrics, setMetrics] = useState<DashboardMetrics>(defaultMetrics)
@@ -258,6 +251,13 @@ function App() {
       )
     })
   }, [properties, agencyQuery])
+
+  const totalVisits = useMemo(() => {
+    return properties.reduce((sum, property, index) => {
+      const baseVisits = property.featured ? 1400 : 920
+      return sum + baseVisits + index * 105
+    }, 0)
+  }, [properties])
 
   useEffect(() => {
     const syncView = () => {
@@ -468,12 +468,23 @@ function App() {
   }
 
   return (
-    <main className="agency-dashboard-screen">
-      <aside className="left-sidebar">
+    <main className={`agency-dashboard-screen ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <aside className={`left-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
         <div>
-          <div className="brand-lockup brand-lockup-sidebar" onClick={openSuperAdmin} role="button" tabIndex={0}>
+          <div className="brand-row">
+            <div className="brand-lockup brand-lockup-sidebar" onClick={openSuperAdmin} role="button" tabIndex={0}>
             <img src={nexusIcon} alt="Nexus icon" className="brand-icon" />
             <img src={nexusWordmark} alt="Nexus Elite CRM" className="brand-wordmark" />
+            </div>
+
+            <button
+              type="button"
+              className="sidebar-collapse-btn"
+              onClick={() => setIsSidebarCollapsed((current) => !current)}
+              aria-label={isSidebarCollapsed ? 'Expandir menú lateral' : 'Colapsar menú lateral'}
+            >
+              {isSidebarCollapsed ? '›' : '‹'}
+            </button>
           </div>
 
           <nav className="sidebar-nav" aria-label="Panel de agencia">
@@ -483,7 +494,7 @@ function App() {
               onClick={() => setActiveNav('dashboard')}
             >
               <span className="nav-icon"><DashboardIcon /></span>
-              Dashboard
+              <span className="nav-label">Dashboard</span>
             </button>
             <button
               type="button"
@@ -491,17 +502,17 @@ function App() {
               onClick={() => setActiveNav('properties')}
             >
               <span className="nav-icon"><PropertyIcon /></span>
-              Propiedades
+              <span className="nav-label">Propiedades</span>
             </button>
             <button type="button" className={activeNav === 'settings' ? 'active' : ''} onClick={() => setActiveNav('settings')}>
               <span className="nav-icon"><SettingsIcon /></span>
-              Configuracion
+              <span className="nav-label">Configuracion</span>
             </button>
           </nav>
         </div>
 
         <div className="sidebar-footer">
-          <button type="button" className="primary-side-btn">+ Add Property</button>
+          <button type="button" className="primary-side-btn"><span>+</span><span className="sidebar-cta-label">Agregar Propiedad</span></button>
           <button type="button" className="text-link-btn" onClick={openSuperAdmin}>Volver a Super Admin</button>
           <button type="button" className="text-link-btn">Soporte</button>
           <button type="button" className="text-link-btn">Cerrar sesion</button>
@@ -530,7 +541,7 @@ function App() {
         <section className="hero-section">
           <div>
             <h1>Propiedades</h1>
-            <p>Administra tu inventario inmobiliario y la configuracion general de la sub-cuenta.</p>
+            <p>Administra propiedades y configuracion general de la sub-cuenta.</p>
           </div>
           <button type="button" className="primary-cta">+ Agregar Propiedad</button>
         </section>
@@ -556,10 +567,10 @@ function App() {
 
           <article className="stat-card stat-card-accent">
             <div className="stat-card-header">
-              <h3>Valor del portafolio</h3>
-              <span className="stat-icon green"><MoneyIcon /></span>
+              <h3>Total visitas</h3>
+              <span className="stat-icon green"><EyeIcon /></span>
             </div>
-            <p>{formatCurrency(metrics.portfolio_value, 'USD')}</p>
+            <p>{formatCompactNumber(totalVisits)}</p>
             <small className="trend-neutral">{metrics.featured_properties} destacadas</small>
           </article>
         </section>

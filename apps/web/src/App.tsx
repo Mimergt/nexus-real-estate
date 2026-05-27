@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 import nexusWordmark from './assets/nexus-logo-w2.png'
 import nexusIcon from './assets/nexus-logo-ico.png'
@@ -21,6 +21,8 @@ const agenciesSeed: Agency[] = [
 function App() {
   const [query, setQuery] = useState('')
   const [activeTab, setActiveTab] = useState<'agencies' | 'global'>('agencies')
+  const [isAvatarMenuOpen, setIsAvatarMenuOpen] = useState(false)
+  const avatarMenuRef = useRef<HTMLDivElement | null>(null)
 
   const filteredAgencies = useMemo(() => {
     const normalized = query.trim().toLowerCase()
@@ -36,6 +38,24 @@ function App() {
       )
     })
   }, [query])
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (!avatarMenuRef.current) {
+        return
+      }
+
+      if (event.target instanceof Node && !avatarMenuRef.current.contains(event.target)) {
+        setIsAvatarMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick)
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [])
 
   return (
     <main className="super-admin-screen">
@@ -74,10 +94,26 @@ function App() {
           </nav>
         </div>
 
-        <div className="topbar-actions" aria-label="User actions">
-          <button type="button" className="icon-btn">◌</button>
-          <button type="button" className="icon-btn">?</button>
-          <div className="avatar">M</div>
+        <div className="topbar-actions" aria-label="User actions" ref={avatarMenuRef}>
+          <button
+            type="button"
+            className="avatar-trigger"
+            onClick={() => setIsAvatarMenuOpen((current) => !current)}
+            aria-expanded={isAvatarMenuOpen}
+            aria-haspopup="menu"
+          >
+            <span className="avatar">M</span>
+          </button>
+          {isAvatarMenuOpen ? (
+            <div className="avatar-menu" role="menu" aria-label="User menu">
+              <button type="button" role="menuitem" onClick={() => setIsAvatarMenuOpen(false)}>
+                Configuracion / Cambiar password
+              </button>
+              <button type="button" role="menuitem" onClick={() => setIsAvatarMenuOpen(false)}>
+                Cerrar sesion
+              </button>
+            </div>
+          ) : null}
         </div>
       </header>
 

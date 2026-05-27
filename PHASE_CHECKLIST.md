@@ -123,6 +123,10 @@ Subtareas buscador
 - [ ] Mostrar ultimas agregadas.
 - [ ] Implementar configuracion de portal por agencia.
 
+Subtareas GUI super admin
+- [x] Implementar primera pantalla Super Admin (Agencies Overview) basada en referencia visual.
+- [ ] Iterar ajustes visuales por seccion segun feedback.
+
 ## Fase 12 - Calidad, seguridad y lanzamiento
 - [ ] Definir pruebas unitarias minimas.
 - [ ] Definir pruebas funcionales criticas.

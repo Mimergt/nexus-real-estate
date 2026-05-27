@@ -8,7 +8,7 @@ Este archivo se actualiza en cada sesion para que cualquier agente o miembro del
 - Cada sesion agrega una nueva entrada al final.
 - No borrar historial; solo corregir con una nota de aclaracion.
 - Registrar decisiones tecnicas, cambios hechos, bloqueos y proximos pasos.
-- Si se solicita acceso (Cloudflare, Git, GHL, Supabase), dejarlo en Pendientes de acceso.
+- Si se solicita acceso (Cloudflare, Git, GHL), dejarlo en Pendientes de acceso.
 
 ## Estado base del proyecto (MVP)
 - Producto: plataforma SaaS inmobiliaria multi-tenant integrada con GoHighLevel (GHL).
@@ -17,7 +17,7 @@ Este archivo se actualiza en cada sesion para que cualquier agente o miembro del
 - Roles MVP: super admin y agency user.
 - Agentes: solo informativos (metadata), sin login ni permisos propios.
 - Infra objetivo: Cloudflare Pages + Workers + R2.
-- Base de datos: Supabase PostgreSQL.
+- Base de datos: Cloudflare D1.
 - Dominio objetivo: nexusre.epic.gt (pendiente CNAME en epic.gt).
 
 ## Plantilla de entrada por sesion
@@ -124,3 +124,57 @@ Siguientes pasos:
 - Ejecutar migracion SQL en D1.
 - Probar CRUD end-to-end contra base real.
 - Implementar auth/contexto de agencia para retirar header temporal.
+
+### Fecha: 2026-05-27
+Sesion: 004
+Resumen:
+Se realizo pivote completo de base de datos a Cloudflare D1 y se conecto el proyecto al repositorio GitHub oficial.
+
+Acciones ejecutadas:
+- Migracion de API desde Supabase hacia D1 (queries SQL directas con binding DB).
+- Creacion de migraciones D1 en apps/api/migrations/0001_initial_schema.sql.
+- Configuracion de binding D1 en apps/api/wrangler.toml (pendiente colocar database_id real).
+- Limpieza de dependencia @supabase/supabase-js y artefactos de carpeta supabase/.
+- Actualizacion de README y checklist para stack Cloudflare-only.
+- Inicializacion de git local, configuracion de remoto origin y push exitoso a main.
+
+Decisiones tomadas:
+- Stack de infraestructura definitivo para MVP: Cloudflare Pages + Workers + R2 + D1.
+- Dominio y DNS siguen en fase de lanzamiento, no bloquean desarrollo.
+
+Pendientes de acceso:
+- Cloudflare: database_id real de D1 para reemplazar placeholder en wrangler.toml.
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno. El repo remoto ya esta operativo.
+
+Siguientes pasos:
+- Crear/confirmar instancia D1 nexus-re-d1 y completar database_id en wrangler.toml.
+- Ejecutar migracion 0001 en D1 local y remota.
+- Probar endpoints CRUD con datos reales.
+
+### Fecha: 2026-05-27
+Sesion: 005
+Resumen:
+Se aprovisiono D1 real en Cloudflare, se aplico la migracion inicial y se valido el runtime local del Worker con base conectada.
+
+Acciones ejecutadas:
+- Creacion de DB D1 nexus-re-d1 en cuenta Cloudflare EPIC.
+- Asignacion de database_id real en apps/api/wrangler.toml.
+- Ejecucion de migracion 0001 en D1 local y remoto.
+- Pruebas smoke de endpoints /health, /v1/bootstrap y /v1/properties con respuesta correcta.
+
+Decisiones tomadas:
+- Se mantiene binding del Worker como env.DB para estabilidad del codigo API.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Sembrar datos iniciales de agencia para pruebas CRUD completas.
+- Implementar CRUD de informational_agents.
+- Iniciar integracion de uploads a R2.

@@ -15,6 +15,7 @@ Marcar tareas a medida que se completen.
 - [ ] Definir arquitectura multi-tenant.
 - [x] Diseñar estructura del repositorio.
 - [x] Configurar entorno local de desarrollo.
+- [x] Inicializar repositorio Git y conectar remoto GitHub.
 - [ ] Configurar estrategia de entornos (dev/staging/prod).
 - [ ] Definir convenciones de codigo, ramas y releases.
 
@@ -22,25 +23,25 @@ Marcar tareas a medida que se completen.
 - [ ] Configurar proyecto en Cloudflare Pages.
 - [ ] Configurar Workers para backend/API.
 - [ ] Configurar bucket R2 para media.
-- [ ] Configurar base de datos D1.
+- [x] Configurar base de datos D1.
 - [ ] Definir politicas de acceso y llaves.
 - [x] Configurar variables de entorno seguras.
 - [ ] Probar deploy inicial end-to-end.
 
 ## Fase 3 - Modelo de datos y multi-tenant
 - [x] Crear scripts SQL iniciales de tablas MVP.
-- [ ] Ejecutar migracion SQL en D1.
-- [ ] Crear tabla agencies.
-- [ ] Crear tabla users (roles: admin, agency_user).
-- [ ] Crear tabla informational_agents.
-- [ ] Crear tabla properties.
+- [x] Ejecutar migracion SQL en D1.
+- [x] Crear tabla agencies.
+- [x] Crear tabla users (roles: admin, agency_user).
+- [x] Crear tabla informational_agents.
+- [x] Crear tabla properties.
 - [ ] Crear tabla property_images.
 - [ ] Crear tabla property_features.
 - [ ] Crear tabla property_types.
 - [ ] Crear tabla website_settings.
 - [ ] Crear tabla templates.
-- [ ] Definir claves foraneas y constraints.
-- [ ] Definir indices para filtros de buscador.
+- [x] Definir claves foraneas y constraints.
+- [x] Definir indices para filtros de buscador.
 - [ ] Aplicar reglas de aislamiento por agency_id.
 
 ## Fase 4 - Autenticacion y autorizacion

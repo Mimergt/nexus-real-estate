@@ -2,6 +2,7 @@
 
 ## Initial schema
 - 0001_initial_schema.sql
+- 0002_seed_dev_data.sql
 
 ## Create D1 database (once)
 ```bash
@@ -21,4 +22,11 @@ npx wrangler d1 execute nexus-re-d1 --local --file=./migrations/0001_initial_sch
 ```bash
 cd apps/api
 npx wrangler d1 execute nexus-re-d1 --remote --file=./migrations/0001_initial_schema.sql
+```
+
+## Apply dev seed data
+```bash
+cd apps/api
+npx wrangler d1 execute nexus-re-d1 --local --file=./migrations/0002_seed_dev_data.sql
+npx wrangler d1 execute nexus-re-d1 --remote --file=./migrations/0002_seed_dev_data.sql
 ```

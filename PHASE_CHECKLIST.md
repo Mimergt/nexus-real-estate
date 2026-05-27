@@ -57,7 +57,7 @@ Marcar tareas a medida que se completen.
 - [ ] Implementar manejo de slug unico.
 - [ ] Implementar estado borrador/publicado.
 - [ ] Implementar campo featured.
-- [ ] Implementar relacion property -> informational_agent.
+- [x] Implementar relacion property -> informational_agent.
 
 Subtareas media
 - [ ] Implementar subida multiple a R2.
@@ -67,7 +67,7 @@ Subtareas media
 - [ ] Implementar eliminacion segura de assets.
 
 ## Fase 6 - Agentes informativos
-- [ ] Implementar CRUD de informational_agents.
+- [x] Implementar CRUD de informational_agents.
 - [ ] Implementar selector de agente en propiedad.
 - [ ] Mostrar tarjeta de agente en detalle de propiedad.
 

@@ -40,6 +40,16 @@ const propertySchema = z.object({
 
 const propertyPatchSchema = propertySchema.partial()
 
+const informationalAgentSchema = z.object({
+  name: z.string().min(1),
+  phone: z.string().nullable().optional(),
+  email: z.email().nullable().optional(),
+  photo: z.url().nullable().optional(),
+  bio: z.string().nullable().optional(),
+})
+
+const informationalAgentPatchSchema = informationalAgentSchema.partial()
+
 const parseAgencyId = (value: string | undefined) => {
   const parsed = agencyIdSchema.safeParse(value)
   return parsed.success ? parsed.data : null
@@ -75,6 +85,18 @@ type PropertyRow = {
   year_built: number | null
   video_url: string | null
   virtual_tour_url: string | null
+  created_at: string
+  updated_at: string
+}
+
+type InformationalAgentRow = {
+  id: string
+  agency_id: string
+  name: string
+  phone: string | null
+  email: string | null
+  photo: string | null
+  bio: string | null
   created_at: string
   updated_at: string
 }
@@ -370,6 +392,207 @@ app.delete('/v1/properties/:id', async (c) => {
   }
 
   await db.prepare('delete from properties where id = ? and agency_id = ?').bind(propertyId, agencyId).run()
+
+  return c.json({ ok: true, deleted_id: found.id })
+})
+
+app.get('/v1/informational-agents', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const { results } = await db
+    .prepare('select * from informational_agents where agency_id = ? order by created_at desc')
+    .bind(agencyId)
+    .all<InformationalAgentRow>()
+
+  return c.json({ ok: true, items: results ?? [] })
+})
+
+app.get('/v1/informational-agents/:id', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const informationalAgentId = c.req.param('id')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(informationalAgentId).success) {
+    return c.json({ ok: false, error: 'invalid_informational_agent_id' }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const item = await db
+    .prepare('select * from informational_agents where id = ? and agency_id = ? limit 1')
+    .bind(informationalAgentId, agencyId)
+    .first<InformationalAgentRow>()
+
+  if (!item) {
+    return c.json({ ok: false, error: 'informational_agent_not_found' }, 404)
+  }
+
+  return c.json({ ok: true, item })
+})
+
+app.post('/v1/informational-agents', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  const body = await c.req.json()
+  const parsedBody = informationalAgentSchema.safeParse(body)
+
+  if (!parsedBody.success) {
+    return c.json({ ok: false, error: 'invalid_payload', details: parsedBody.error.flatten() }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const id = crypto.randomUUID()
+  const now = new Date().toISOString()
+
+  await db
+    .prepare(
+      `insert into informational_agents (
+        id, agency_id, name, phone, email, photo, bio, created_at, updated_at
+      ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+    .bind(
+      id,
+      agencyId,
+      parsedBody.data.name,
+      parsedBody.data.phone ?? null,
+      parsedBody.data.email ?? null,
+      parsedBody.data.photo ?? null,
+      parsedBody.data.bio ?? null,
+      now,
+      now
+    )
+    .run()
+
+  const inserted = await db.prepare('select * from informational_agents where id = ? limit 1').bind(id).first()
+
+  return c.json({ ok: true, item: inserted ?? null }, 201)
+})
+
+app.patch('/v1/informational-agents/:id', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const informationalAgentId = c.req.param('id')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(informationalAgentId).success) {
+    return c.json({ ok: false, error: 'invalid_informational_agent_id' }, 400)
+  }
+
+  const body = await c.req.json()
+  const parsedBody = informationalAgentPatchSchema.safeParse(body)
+
+  if (!parsedBody.success) {
+    return c.json({ ok: false, error: 'invalid_payload', details: parsedBody.error.flatten() }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const current = await db
+    .prepare('select * from informational_agents where id = ? and agency_id = ? limit 1')
+    .bind(informationalAgentId, agencyId)
+    .first<InformationalAgentRow>()
+
+  if (!current) {
+    return c.json({ ok: false, error: 'informational_agent_not_found' }, 404)
+  }
+
+  const next = {
+    ...current,
+    ...parsedBody.data,
+    agency_id: current.agency_id,
+    id: current.id,
+    updated_at: new Date().toISOString(),
+  }
+
+  await db
+    .prepare(
+      `update informational_agents set
+        name = ?, phone = ?, email = ?, photo = ?, bio = ?, updated_at = ?
+      where id = ? and agency_id = ?`
+    )
+    .bind(
+      next.name,
+      next.phone ?? null,
+      next.email ?? null,
+      next.photo ?? null,
+      next.bio ?? null,
+      next.updated_at,
+      informationalAgentId,
+      agencyId
+    )
+    .run()
+
+  const updated = await db
+    .prepare('select * from informational_agents where id = ? and agency_id = ? limit 1')
+    .bind(informationalAgentId, agencyId)
+    .first<InformationalAgentRow>()
+
+  return c.json({ ok: true, item: updated ?? null })
+})
+
+app.delete('/v1/informational-agents/:id', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const informationalAgentId = c.req.param('id')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(informationalAgentId).success) {
+    return c.json({ ok: false, error: 'invalid_informational_agent_id' }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const found = await db
+    .prepare('select id from informational_agents where id = ? and agency_id = ? limit 1')
+    .bind(informationalAgentId, agencyId)
+    .first<{ id: string }>()
+
+  if (!found) {
+    return c.json({ ok: false, error: 'informational_agent_not_found' }, 404)
+  }
+
+  await db
+    .prepare('delete from informational_agents where id = ? and agency_id = ?')
+    .bind(informationalAgentId, agencyId)
+    .run()
 
   return c.json({ ok: true, deleted_id: found.id })
 })

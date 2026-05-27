@@ -178,3 +178,29 @@ Siguientes pasos:
 - Sembrar datos iniciales de agencia para pruebas CRUD completas.
 - Implementar CRUD de informational_agents.
 - Iniciar integracion de uploads a R2.
+
+### Fecha: 2026-05-27
+Sesion: 006
+Resumen:
+Se completo CRUD de agentes informativos y se agrego seed inicial en D1 para pruebas con datos reales.
+
+Acciones ejecutadas:
+- Implementacion de endpoints CRUD para informational_agents en API.
+- Creacion de migracion seed en apps/api/migrations/0002_seed_dev_data.sql.
+- Ejecucion de seed local y remoto en D1.
+- Pruebas funcionales de endpoints de agents y properties con respuestas correctas.
+- Actualizacion de README y guia de migraciones para incluir seed.
+
+Decisiones tomadas:
+- Mantener seed idempotente con INSERT OR IGNORE para permitir re-ejecucion segura.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Implementar selector de agente en formulario de propiedad del panel.
+- Crear primeras tablas restantes de modelo (property_images/property_features/property_types).
+- Iniciar modulo de uploads a R2.

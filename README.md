@@ -56,6 +56,7 @@ Editar `apps/api/.dev.vars` con valores reales de Cloudflare y GHL.
 
 ## Base de datos (slice inicial)
 - SQL inicial: `apps/api/migrations/0001_initial_schema.sql`
+- Seed inicial: `apps/api/migrations/0002_seed_dev_data.sql`
 - Guia: `apps/api/migrations/README.md`
 
 ## Variables de entorno
@@ -78,6 +79,11 @@ Usar .env.example como base. Campos actuales:
 - POST /v1/properties
 - PATCH /v1/properties/:id
 - DELETE /v1/properties/:id
+- GET /v1/informational-agents
+- GET /v1/informational-agents/:id
+- POST /v1/informational-agents
+- PATCH /v1/informational-agents/:id
+- DELETE /v1/informational-agents/:id
 
 Todos los endpoints de propiedades requieren header `x-agency-id` con UUID valido.
 

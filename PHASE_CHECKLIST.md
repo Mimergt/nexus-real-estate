@@ -20,13 +20,18 @@ Marcar tareas a medida que se completen.
 - [ ] Definir convenciones de codigo, ramas y releases.
 
 ## Fase 2 - Infraestructura Cloudflare + D1
-- [ ] Configurar proyecto en Cloudflare Pages.
-- [ ] Configurar Workers para backend/API.
+- [ ] Configurar proyecto en Cloudflare Pages (inicio despliegue).
+- [ ] Configurar Workers para backend/API (inicio despliegue).
 - [x] Configurar bucket R2 para media.
 - [x] Configurar base de datos D1.
 - [ ] Definir politicas de acceso y llaves.
 - [x] Configurar variables de entorno seguras.
 - [ ] Probar deploy inicial end-to-end.
+
+Subtareas despliegue inicial GUI
+- [ ] Publicar primer entorno para revision visual de paginas.
+- [ ] Conectar frontend desplegado con API Worker desplegada.
+- [ ] Validar CRUD basico en entorno desplegado.
 
 ## Fase 3 - Modelo de datos y multi-tenant
 - [x] Crear scripts SQL iniciales de tablas MVP.
@@ -50,6 +55,7 @@ Marcar tareas a medida que se completen.
 - [ ] Implementar proteccion de rutas privadas.
 - [ ] Implementar contexto de agencia activa.
 - [ ] Probar aislamiento de datos entre tenants.
+- [ ] Crear super admin temporal para QA de GUI (credenciales fuera del repositorio, gestionadas como secreto).
 
 ## Fase 5 - Modulo de propiedades (core)
 - [x] Implementar CRUD de propiedades.

@@ -283,3 +283,26 @@ Bloqueos:
 Siguientes pasos:
 - Desplegar panel y API en Cloudflare para pruebas fuera de localhost.
 - Iniciar autenticacion y contexto de agencia en frontend/backend.
+
+### Fecha: 2026-05-27
+Sesion: 010
+Resumen:
+Se definio iniciar proceso de despliegue para revisar GUI en entorno publicado y trabajar ajustes iterativos de paginas.
+
+Acciones ejecutadas:
+- Actualizacion de checklist para priorizar despliegue inicial (Pages + Worker) y validacion E2E en entorno publicado.
+- Registro de estrategia de super admin temporal para QA de interfaz.
+
+Decisiones tomadas:
+- Se usara un super admin temporal para ajuste visual y pruebas de flujo en GUI.
+- Las credenciales no se guardan en archivos versionados; se manejan como secretos de entorno.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Mostrar estado actual de lo construido en web/API para definir ajustes de interfaz.
+- Ejecutar despliegue inicial a Cloudflare Pages y Worker.

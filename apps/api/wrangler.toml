@@ -1,0 +1,12 @@
+name = "nexus-re-api"
+main = "src/index.ts"
+compatibility_date = "2026-05-27"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nexus-re-d1"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"

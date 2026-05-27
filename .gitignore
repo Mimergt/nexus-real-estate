@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+.env
+.env.*
+!.env.example
+.wrangler/
+dist/
+coverage/
+*.log
+apps/web/node_modules/
+apps/web/dist/
+apps/api/node_modules/
+apps/api/.wrangler/
+apps/api/dist/

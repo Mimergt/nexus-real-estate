@@ -10,3 +10,7 @@ enabled = true
 binding = "DB"
 database_name = "nexus-re-d1"
 database_id = "1161e5c3-a173-4aee-93a8-4e93063a04b9"
+
+[[r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "nexus-re-media"

@@ -204,3 +204,31 @@ Siguientes pasos:
 - Implementar selector de agente en formulario de propiedad del panel.
 - Crear primeras tablas restantes de modelo (property_images/property_features/property_types).
 - Iniciar modulo de uploads a R2.
+
+### Fecha: 2026-05-27
+Sesion: 007
+Resumen:
+Se completo expansion del esquema D1 restante y se implemento el modulo inicial de media en R2 para propiedades.
+
+Acciones ejecutadas:
+- Creacion de migracion apps/api/migrations/0003_expand_mvp_schema.sql.
+- Ejecucion de migracion 0003 en D1 local y remoto.
+- Creacion del bucket R2 nexus-re-media.
+- Configuracion de binding MEDIA_BUCKET en wrangler.toml.
+- Implementacion de endpoints de imagenes de propiedad (listar, subir, marcar principal, eliminar).
+- Prueba funcional de upload base64 PNG y listado de imagenes con resultado exitoso.
+
+Decisiones tomadas:
+- Estrategia de media MVP: subida via API al Worker y registro en tabla property_images.
+- Se mantiene URL placeholder de media para etapa MVP inicial, pendiente dominio CDN final.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Integrar estos endpoints en panel web (UI de upload, orden y principal).
+- Implementar ordenamiento de galeria por sort_order desde frontend.
+- Avanzar con autenticacion para sustituir header x-agency-id.

@@ -4,6 +4,7 @@ import { listingTypeSchema } from '@nexus-re/shared'
 
 type Bindings = {
   DB?: D1Database
+  MEDIA_BUCKET?: R2Bucket
   GHL_CLIENT_ID?: string
 }
 
@@ -49,6 +50,13 @@ const informationalAgentSchema = z.object({
 })
 
 const informationalAgentPatchSchema = informationalAgentSchema.partial()
+
+const propertyImageUploadSchema = z.object({
+  filename: z.string().min(1),
+  content_type: z.string().min(1),
+  data_base64: z.string().min(1),
+  is_primary: z.boolean().optional().default(false),
+})
 
 const parseAgencyId = (value: string | undefined) => {
   const parsed = agencyIdSchema.safeParse(value)
@@ -101,13 +109,48 @@ type InformationalAgentRow = {
   updated_at: string
 }
 
+type PropertyImageRow = {
+  id: string
+  property_id: string
+  agency_id: string
+  object_key: string
+  image_url: string
+  content_type: string | null
+  file_size_bytes: number | null
+  is_primary: number
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 const mapPropertyRow = (row: PropertyRow) => ({
   ...row,
   featured: fromDbBoolean(row.featured),
   published: fromDbBoolean(row.published),
 })
 
+const mapPropertyImageRow = (row: PropertyImageRow) => ({
+  ...row,
+  is_primary: fromDbBoolean(row.is_primary),
+})
+
 const getDb = (env: Bindings) => env.DB
+
+const getMediaBucket = (env: Bindings) => env.MEDIA_BUCKET
+
+const decodeBase64 = (encoded: string) => {
+  const normalized = encoded.includes(',') ? encoded.split(',').pop() ?? '' : encoded
+  const binary = atob(normalized)
+  const bytes = new Uint8Array(binary.length)
+
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+
+  return bytes
+}
+
+const sanitizeFilename = (filename: string) => filename.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase()
 
 const app = new Hono<{ Bindings: Bindings }>()
 
@@ -117,6 +160,7 @@ app.get('/health', (c) => {
 
 app.get('/v1/bootstrap', (c) => {
   const hasD1 = Boolean(c.env.DB)
+  const hasR2 = Boolean(c.env.MEDIA_BUCKET)
   const hasGhl = Boolean(c.env.GHL_CLIENT_ID)
 
   return c.json({
@@ -124,6 +168,7 @@ app.get('/v1/bootstrap', (c) => {
     mvp_scope: 'properties_portal_only',
     integrations: {
       d1_configured: hasD1,
+      r2_configured: hasR2,
       ghl_oauth_configured: hasGhl,
     },
   })
@@ -592,6 +637,230 @@ app.delete('/v1/informational-agents/:id', async (c) => {
   await db
     .prepare('delete from informational_agents where id = ? and agency_id = ?')
     .bind(informationalAgentId, agencyId)
+    .run()
+
+  return c.json({ ok: true, deleted_id: found.id })
+})
+
+app.get('/v1/properties/:id/images', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const propertyId = c.req.param('id')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(propertyId).success) {
+    return c.json({ ok: false, error: 'invalid_property_id' }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const property = await db
+    .prepare('select id from properties where id = ? and agency_id = ? limit 1')
+    .bind(propertyId, agencyId)
+    .first<{ id: string }>()
+
+  if (!property) {
+    return c.json({ ok: false, error: 'property_not_found' }, 404)
+  }
+
+  const { results } = await db
+    .prepare('select * from property_images where property_id = ? and agency_id = ? order by sort_order asc, created_at asc')
+    .bind(propertyId, agencyId)
+    .all<PropertyImageRow>()
+
+  return c.json({ ok: true, items: (results ?? []).map(mapPropertyImageRow) })
+})
+
+app.post('/v1/properties/:id/images', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const propertyId = c.req.param('id')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(propertyId).success) {
+    return c.json({ ok: false, error: 'invalid_property_id' }, 400)
+  }
+
+  const body = await c.req.json()
+  const parsedBody = propertyImageUploadSchema.safeParse(body)
+
+  if (!parsedBody.success) {
+    return c.json({ ok: false, error: 'invalid_payload', details: parsedBody.error.flatten() }, 400)
+  }
+
+  const db = getDb(c.env)
+  const bucket = getMediaBucket(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  if (!bucket) {
+    return c.json({ ok: false, error: 'r2_not_configured' }, 500)
+  }
+
+  const property = await db
+    .prepare('select id from properties where id = ? and agency_id = ? limit 1')
+    .bind(propertyId, agencyId)
+    .first<{ id: string }>()
+
+  if (!property) {
+    return c.json({ ok: false, error: 'property_not_found' }, 404)
+  }
+
+  const imageId = crypto.randomUUID()
+  const now = new Date().toISOString()
+  const safeFilename = sanitizeFilename(parsedBody.data.filename)
+  const objectKey = `${agencyId}/${propertyId}/${Date.now()}-${safeFilename}`
+  const bytes = decodeBase64(parsedBody.data.data_base64)
+
+  await bucket.put(objectKey, bytes, {
+    httpMetadata: {
+      contentType: parsedBody.data.content_type,
+    },
+  })
+
+  const { results } = await db
+    .prepare('select coalesce(max(sort_order), 0) as max_sort_order from property_images where property_id = ? and agency_id = ?')
+    .bind(propertyId, agencyId)
+    .all<{ max_sort_order: number }>()
+
+  const maxSortOrder = results?.[0]?.max_sort_order ?? 0
+  const nextSortOrder = Number(maxSortOrder) + 1
+
+  if (parsedBody.data.is_primary) {
+    await db
+      .prepare('update property_images set is_primary = 0, updated_at = ? where property_id = ? and agency_id = ?')
+      .bind(now, propertyId, agencyId)
+      .run()
+  }
+
+  const imageUrl = `https://media.nexusre.local/${objectKey}`
+
+  await db
+    .prepare(
+      `insert into property_images (
+        id, property_id, agency_id, object_key, image_url, content_type, file_size_bytes,
+        is_primary, sort_order, created_at, updated_at
+      ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+    .bind(
+      imageId,
+      propertyId,
+      agencyId,
+      objectKey,
+      imageUrl,
+      parsedBody.data.content_type,
+      bytes.byteLength,
+      toDbBoolean(parsedBody.data.is_primary),
+      nextSortOrder,
+      now,
+      now
+    )
+    .run()
+
+  const inserted = await db
+    .prepare('select * from property_images where id = ? and agency_id = ? limit 1')
+    .bind(imageId, agencyId)
+    .first<PropertyImageRow>()
+
+  return c.json({ ok: true, item: inserted ? mapPropertyImageRow(inserted) : null }, 201)
+})
+
+app.patch('/v1/properties/:propertyId/images/:imageId/primary', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const propertyId = c.req.param('propertyId')
+  const imageId = c.req.param('imageId')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(propertyId).success || !agencyIdSchema.safeParse(imageId).success) {
+    return c.json({ ok: false, error: 'invalid_id' }, 400)
+  }
+
+  const db = getDb(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  const found = await db
+    .prepare('select id from property_images where id = ? and property_id = ? and agency_id = ? limit 1')
+    .bind(imageId, propertyId, agencyId)
+    .first<{ id: string }>()
+
+  if (!found) {
+    return c.json({ ok: false, error: 'property_image_not_found' }, 404)
+  }
+
+  const now = new Date().toISOString()
+
+  await db
+    .prepare('update property_images set is_primary = 0, updated_at = ? where property_id = ? and agency_id = ?')
+    .bind(now, propertyId, agencyId)
+    .run()
+
+  await db
+    .prepare('update property_images set is_primary = 1, updated_at = ? where id = ? and property_id = ? and agency_id = ?')
+    .bind(now, imageId, propertyId, agencyId)
+    .run()
+
+  const updated = await db
+    .prepare('select * from property_images where id = ? and property_id = ? and agency_id = ? limit 1')
+    .bind(imageId, propertyId, agencyId)
+    .first<PropertyImageRow>()
+
+  return c.json({ ok: true, item: updated ? mapPropertyImageRow(updated) : null })
+})
+
+app.delete('/v1/properties/:propertyId/images/:imageId', async (c) => {
+  const agencyId = parseAgencyId(c.req.header(agencyHeader))
+  const propertyId = c.req.param('propertyId')
+  const imageId = c.req.param('imageId')
+
+  if (!agencyId) {
+    return c.json({ ok: false, error: 'missing_or_invalid_agency_id_header' }, 400)
+  }
+
+  if (!agencyIdSchema.safeParse(propertyId).success || !agencyIdSchema.safeParse(imageId).success) {
+    return c.json({ ok: false, error: 'invalid_id' }, 400)
+  }
+
+  const db = getDb(c.env)
+  const bucket = getMediaBucket(c.env)
+
+  if (!db) {
+    return c.json({ ok: false, error: 'd1_not_configured' }, 500)
+  }
+
+  if (!bucket) {
+    return c.json({ ok: false, error: 'r2_not_configured' }, 500)
+  }
+
+  const found = await db
+    .prepare('select id, object_key from property_images where id = ? and property_id = ? and agency_id = ? limit 1')
+    .bind(imageId, propertyId, agencyId)
+    .first<{ id: string; object_key: string }>()
+
+  if (!found) {
+    return c.json({ ok: false, error: 'property_image_not_found' }, 404)
+  }
+
+  await bucket.delete(found.object_key)
+
+  await db
+    .prepare('delete from property_images where id = ? and property_id = ? and agency_id = ?')
+    .bind(imageId, propertyId, agencyId)
     .run()
 
   return c.json({ ok: true, deleted_id: found.id })

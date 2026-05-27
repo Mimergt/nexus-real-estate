@@ -22,7 +22,7 @@ Marcar tareas a medida que se completen.
 ## Fase 2 - Infraestructura Cloudflare + D1
 - [ ] Configurar proyecto en Cloudflare Pages.
 - [ ] Configurar Workers para backend/API.
-- [ ] Configurar bucket R2 para media.
+- [x] Configurar bucket R2 para media.
 - [x] Configurar base de datos D1.
 - [ ] Definir politicas de acceso y llaves.
 - [x] Configurar variables de entorno seguras.
@@ -35,11 +35,11 @@ Marcar tareas a medida que se completen.
 - [x] Crear tabla users (roles: admin, agency_user).
 - [x] Crear tabla informational_agents.
 - [x] Crear tabla properties.
-- [ ] Crear tabla property_images.
-- [ ] Crear tabla property_features.
-- [ ] Crear tabla property_types.
-- [ ] Crear tabla website_settings.
-- [ ] Crear tabla templates.
+- [x] Crear tabla property_images.
+- [x] Crear tabla property_features.
+- [x] Crear tabla property_types.
+- [x] Crear tabla website_settings.
+- [x] Crear tabla templates.
 - [x] Definir claves foraneas y constraints.
 - [x] Definir indices para filtros de buscador.
 - [ ] Aplicar reglas de aislamiento por agency_id.

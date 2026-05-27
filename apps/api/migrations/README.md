@@ -3,6 +3,7 @@
 ## Initial schema
 - 0001_initial_schema.sql
 - 0002_seed_dev_data.sql
+- 0003_expand_mvp_schema.sql
 
 ## Create D1 database (once)
 ```bash
@@ -29,4 +30,11 @@ npx wrangler d1 execute nexus-re-d1 --remote --file=./migrations/0001_initial_sc
 cd apps/api
 npx wrangler d1 execute nexus-re-d1 --local --file=./migrations/0002_seed_dev_data.sql
 npx wrangler d1 execute nexus-re-d1 --remote --file=./migrations/0002_seed_dev_data.sql
+```
+
+## Apply schema expansion
+```bash
+cd apps/api
+npx wrangler d1 execute nexus-re-d1 --local --file=./migrations/0003_expand_mvp_schema.sql
+npx wrangler d1 execute nexus-re-d1 --remote --file=./migrations/0003_expand_mvp_schema.sql
 ```

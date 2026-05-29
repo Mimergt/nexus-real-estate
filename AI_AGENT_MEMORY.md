@@ -260,6 +260,45 @@ Siguientes pasos:
 - Consumir el panel desde entorno desplegado en Pages/Workers.
 
 ### Fecha: 2026-05-28
+Sesion: 014
+Resumen:
+Se completo una iteracion extensa de GUI para Template 1 publico (home + perfil SEO), se publicaron cambios en GitHub y se realizo despliegue actualizado en Cloudflare Workers + Pages.
+
+Acciones ejecutadas:
+- Implementacion y refinamiento de Home publico (`/portal/template-1`) con 15 propiedades seed, favoritos, paginacion y navegacion a perfil por slug.
+- Implementacion y refinamiento de Perfil publico (`/propiedad/:slug`) con galeria, share menu, precios renta/venta, amenidades, mapa, tarjeta de asesor, detalles tecnicos y formulario.
+- Correccion de errores de carga y parseo en `apps/web/src/lib/template1Data.ts` (orden de helper de slug y sintaxis de map).
+- Migracion de iconos de UI a stack consistente (Lucide + react-icons para marcas sociales).
+- Iteraciones visuales segun feedback: contraste de asesor, CTA, alineaciones, layout de precios, centrado de elementos y responsive.
+- Navegacion superior extendida con tabs `Renta`/`Venta` en Home y Perfil; click redirige al Home con hash `#renta` o `#venta`.
+- Implementacion de filtrado por hash en Home usando `forRent`/`forSale`.
+- Build del frontend validado repetidamente en verde (`npm run build -w web`).
+- Publicacion en git de todos los cambios de sesion:
+	- commit: `43bc5eb`
+	- branch: `main`
+	- remote: `origin`
+- Despliegue backend actualizado con Wrangler:
+	- Worker URL: `https://nexus-re-api.epicgt.workers.dev`
+	- Version ID: `e3f4e778-9e9c-4930-8d49-7d83669afd7a`
+- Despliegue frontend actualizado en Cloudflare Pages:
+	- URL: `https://22ca50f2.nexus-re-web.pages.dev`
+
+Decisiones tomadas:
+- Mantener flujo de filtros de disponibilidad por hash (`#renta`, `#venta`) para enlaces de menu y deep-linking simple.
+- Mantener fuente de datos fallback seed cuando API local no responde, para no bloquear iteracion de GUI.
+
+Pendientes de acceso:
+- Ninguno nuevo para esta sesion.
+
+Bloqueos:
+- Push inicial a GitHub fallo con HTTP 400 intermitente.
+- Mitigacion aplicada: `git config http.postBuffer 524288000` + reintento; push exitoso.
+
+Siguientes pasos:
+- Validar paridad visual final con referencia pixel-level en Template 1 (si aplica).
+- Continuar con criterios de aceptacion por modulo y auth multi-tenant para retirar header temporal.
+
+### Fecha: 2026-05-28
 Sesion: 009
 Resumen:
 Se completo refinamiento clave de la pantalla Nueva Propiedad (UI/UX y validaciones de publicacion) y se publico una nueva version en Cloudflare Pages.

@@ -31,7 +31,7 @@ Marcar tareas a medida que se completen.
 Subtareas despliegue inicial GUI
 - [x] Publicar primer entorno para revision visual de paginas.
 - [x] Conectar frontend desplegado con API Worker desplegada.
-- [ ] Validar CRUD basico en entorno desplegado.
+- [x] Validar CRUD basico en entorno desplegado.
 
 ## Fase 3 - Modelo de datos y multi-tenant
 - [x] Crear scripts SQL iniciales de tablas MVP.
@@ -75,17 +75,17 @@ Subtareas media
 ## Fase 6 - Agentes informativos
 - [x] Implementar CRUD de informational_agents.
 - [x] Implementar selector de agente en propiedad.
-- [ ] Mostrar tarjeta de agente en detalle de propiedad.
+- [x] Mostrar tarjeta de agente en detalle de propiedad.
 
 ## Fase 7 - Portal publico inmobiliario
-- [ ] Construir pagina Home.
+- [x] Construir pagina Home.
 - [ ] Construir listado de propiedades.
-- [ ] Construir detalle de propiedad.
+- [x] Construir detalle de propiedad.
 - [ ] Construir pagina de contacto.
 - [ ] Implementar vista grid/lista.
 
 Subtareas buscador
-- [ ] Filtro por venta/renta.
+- [x] Filtro por venta/renta.
 - [ ] Filtro por tipo de propiedad.
 - [ ] Filtro por ciudad.
 - [ ] Filtro por zona.
@@ -93,7 +93,7 @@ Subtareas buscador
 - [ ] Filtro por habitaciones.
 
 ## Fase 8 - Templates y branding
-- [ ] Implementar Template 1 (Modern Minimal).
+- [x] Implementar Template 1 (Modern Minimal).
 - [ ] Implementar Template 2 (Luxury Premium).
 - [ ] Configurar personalizacion de logo.
 - [ ] Configurar colores primario/secundario.

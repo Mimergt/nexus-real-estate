@@ -127,6 +127,27 @@ Subtareas GUI super admin
 - [x] Implementar primera pantalla Super Admin (Agencies Overview) basada en referencia visual.
 - [ ] Iterar ajustes visuales por seccion segun feedback.
 
+Subtareas GUI agencia
+- [x] Implementar pantalla Gestion de Propiedades basada en stitch_nexus_re_propertyManagement (estructura inicial en espanol).
+- [x] Habilitar navegacion funcional Dashboard <-> Propiedades en panel de agencia.
+- [x] Migrar navegacion a rutas reales separadas: /agency/ y /agency/propiedades/ (sin hash interno).
+- [ ] Ajuste visual fino 1:1 respecto al mock (espaciados y detalles de tabla/filtros).
+- [x] Implementar pantalla Nueva Propiedad basada en stitch_nexus_re_crear_propiedad.
+- [x] Conectar navegacion a /agency/nueva-propiedad/ desde CTAs de dashboard/propiedades/sidebar.
+- [x] Agregar boton Vista Previa y modal de resumen en Nueva Propiedad.
+- [x] Bloquear publicacion en UI si faltan titulo, precios requeridos o minimo una imagen.
+- [x] Mejorar bloque Amenidades con buscador, scroll visible y alta de amenidad personalizada (icono + nombre).
+- [x] Agregar bloque Formulario Personalizado con campo HTML condicional.
+- [x] Ajustar score de listing para completar 100% al llenar todos los bloques clave.
+- [x] Agregar ubicacion estructurada por Departamento y Municipio de Guatemala.
+- [x] Agregar direccion en texto plano antes del mapa.
+- [x] Cambiar precios de venta y renta a Quetzales.
+- [x] Estilizar el buscador de amenidades.
+- [x] Cambiar selector de icono de amenidad a selector visual.
+- [x] Reemplazar texto close de etiquetas por icono de borrado.
+- [x] Eliminar el bloque de puntuacion del listado.
+- [ ] Conectar formulario Nueva Propiedad con endpoint real de persistencia.
+
 ## Fase 12 - Calidad, seguridad y lanzamiento
 - [ ] Definir pruebas unitarias minimas.
 - [ ] Definir pruebas funcionales criticas.

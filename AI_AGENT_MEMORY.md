@@ -258,6 +258,194 @@ Bloqueos:
 Siguientes pasos:
 - Implementar drag/drop real para galeria.
 - Consumir el panel desde entorno desplegado en Pages/Workers.
+
+### Fecha: 2026-05-28
+Sesion: 009
+Resumen:
+Se completo refinamiento clave de la pantalla Nueva Propiedad (UI/UX y validaciones de publicacion) y se publico una nueva version en Cloudflare Pages.
+
+Acciones ejecutadas:
+- Implementacion de boton "Vista previa" con modal de resumen de datos.
+- Validacion dura de publicacion en frontend: requiere titulo, precios segun tipo de oferta y minimo una imagen.
+- Mejora de multimedia: selector de archivos real, previsualizacion de imagenes cargadas y eliminacion individual.
+- Rediseño del bloque Amenidades con buscador, lista con scroll (viewport fijo), y creador de amenidades personalizadas con selector de icono + nombre.
+- Implementacion de bloque "Formulario" con checkbox de habilitacion y area para HTML personalizado.
+- Recalculo de score de listing por secciones para alcanzar 100% cuando todo esta completo.
+- Build local exitoso y deploy Pages exitoso en: https://e9958b48.nexus-re-web.pages.dev
+
+Decisiones tomadas:
+- La publicacion queda bloqueada en UI si faltan campos criticos; la persistencia real queda para siguiente paso de integracion backend.
+- El score se evalua por bloques funcionales de la ficha para reflejar completitud real del formulario.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Conectar el submit de Nueva Propiedad con endpoint real de creacion/guardado.
+- Reemplazar previsualizacion local de imagenes por flujo definitivo con upload a R2 en esta pantalla.
+
+### Fecha: 2026-05-27
+Sesion: 010
+Resumen:
+Se ajusto nuevamente la pantalla Nueva Propiedad para agregar ubicacion estructurada de Guatemala, precios en Quetzales, buscador estilizado, selector visual de iconos de amenidades y borrado de etiquetas con icono.
+
+Acciones ejecutadas:
+- Agregados selectores de Departamento y Municipio con lista de departamentos de Guatemala.
+- Agregado campo de direccion en texto plano antes del mapa.
+- Cambiados labels de precios a Quetzales para venta y renta.
+- Redisenado el buscador de amenidades con estilo propio e icono visible.
+- Reemplazado el dropdown de icono por un selector visual de iconos para amenidades.
+- Sustituido el texto "close" en etiquetas por un icono de borrado.
+- Eliminado el bloque de puntuacion del listado.
+- Rebuild y redeploy exitosos en Cloudflare Pages.
+
+Decisiones tomadas:
+- La ubicacion se modela como departamento + municipio + direccion libre para facilitar persistencia posterior.
+- Los precios se muestran en Q para alinearse con el mercado local de Guatemala.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Conectar persistencia real de la nueva propiedad al backend.
+- Validar que el endpoint reciba los nuevos campos de ubicacion y precios en Quetzales.
+
+### Fecha: 2026-05-27
+Sesion: 009
+Resumen:
+Se estabilizo la navegacion del dashboard de agencia y se implemento la nueva pantalla de Gestion de Propiedades basada en la plantilla stitch_nexus_re_propertyManagement, manteniendo toda la interfaz en espanol.
+
+Acciones ejecutadas:
+- Correccion de CSS y TypeScript para recuperar build verde del frontend.
+- Ajuste del sidebar de agencia para icono de Propiedades con edificio (home_work).
+- Separacion real de vistas del panel de agencia:
+	- Dashboard (resumen)
+	- Gestion de Propiedades (tabla/filtros/acciones)
+- Implementacion de filtros visuales y tabla expandida en Gestion de Propiedades.
+- Validacion manual en navegador de click en menu:
+	- Dashboard muestra resumen.
+	- Propiedades muestra Gestion de Propiedades.
+- Deploy publicado en Cloudflare Pages.
+
+Decisiones tomadas:
+- Mantener React + CSS existente y usar la plantilla como referencia de estructura/estilo (no migrar framework).
+- Preservar Super Admin como entrada principal y usar hash #agency-demo para flujo de agencia.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno activo.
+
+Siguientes pasos:
+- Ajuste fino visual 1:1 de Gestion de Propiedades (espaciados, estados, paginacion).
+- Conectar filtros UI a filtrado real de datos (estado/tipo/agente).
+- Definir comportamiento funcional de acciones por fila (editar/ver/mas).
+
+### Fecha: 2026-05-27
+Sesion: 010
+Resumen:
+Se migro la navegacion del frontend desde hash interno a rutas reales con React Router, separando Super Admin y pantallas de agencia en paginas independientes.
+
+Acciones ejecutadas:
+- Instalacion de react-router-dom en apps/web.
+- Refactor de App principal para declarar rutas:
+	- / (Super Admin)
+	- /agency/ (Dashboard de agencia)
+	- /agency/propiedades/ (Gestion de propiedades)
+- Separacion de pantallas y componentes en archivos dedicados:
+	- pages/SuperAdminPage.tsx
+	- pages/AgencyDashboardPage.tsx
+	- pages/AgencyPropertiesPage.tsx
+	- components/AgencyLayout.tsx
+- Extraccion de logica compartida de agencia a hook y utilidades:
+	- hooks/useAgencyData.ts
+	- lib/types.ts
+	- lib/formatters.ts
+- Validacion funcional en deploy de Pages: rutas directas y navegacion lateral entre /agency/ y /agency/propiedades/.
+
+Decisiones tomadas:
+- Mantener el CSS visual existente para evitar regresiones de estilo y concentrar cambios en arquitectura de navegacion.
+- Compartir layout y carga de datos de agencia entre paginas para consistencia visual/funcional.
+
+Bloqueos:
+- Ninguno activo.
+
+Siguientes pasos:
+- Revisar reglas/redirects de Pages para que el alias principal propague la nueva version sin cache residual.
+- Conectar acciones de tabla y filtros a comportamientos reales de negocio.
+
+### Fecha: 2026-05-27
+Sesion: 011
+Resumen:
+Ajuste puntual de UX en Dashboard y detalle de copy en header de Gestion de Propiedades.
+
+Acciones ejecutadas:
+- Se agrego accion adicional tipo "mundito" (icono language) en la tabla de actividad reciente del Dashboard para "Ver propiedad".
+- Se mantuvo accion de visibility como "Vista previa" para diferenciar funciones.
+- Se corrigio copy del header en Gestion de Propiedades para mostrar singular/plural correcto:
+	- 1 propiedad
+	- N propiedades
+
+Bloqueos:
+- Validacion de build/deploy por terminal con salida intermitente no concluyente en esta corrida.
+
+Siguientes pasos:
+- Publicar nuevamente cuando el build en terminal responda normal y validar en alias principal.
+
+### Fecha: 2026-05-27
+Sesion: 012
+Resumen:
+Se corrigio la diferencia visual del header entre Dashboard y Gestion de Propiedades en agencia.
+
+Acciones ejecutadas:
+- Se identifico causa raiz en CSS: `main-panel` heredaba `display: grid` por reglas duplicadas y estiraba filas de forma inconsistente segun contenido.
+- Se forzo layout estable para `main-panel` con `display: flex` + `flex-direction: column`.
+- Se fijo `topbar` como bloque no estirable (`flex: 0 0 auto`).
+- Se mantuvo el contenido de ambas vistas (`agency-dashboard-overview` y `property-management-view`) como bloque principal (`flex: 1 0 auto`).
+- Build y deploy exitoso en Pages.
+
+Resultado:
+- Header superior (busqueda + iconos + avatar) queda con altura consistente entre:
+	- /agency/
+	- /agency/propiedades/
+
+### Fecha: 2026-05-27
+Sesion: 013
+Resumen:
+Se implemento la nueva pantalla "Nueva Propiedad" con ruta separada y base de campos alineada a datos de backend.
+
+Acciones ejecutadas:
+- Nueva ruta en panel de agencia:
+	- /agency/nueva-propiedad/
+- Nueva pantalla React basada en template stitch_nexus_re_crear_propiedad:
+	- Header de accion (guardar/publicar)
+	- Informacion principal (titulo, descripcion, tags)
+	- Tipo de oferta y precios (venta/renta/ambos)
+	- Multimedia (dropzone UI)
+	- Ubicacion (maps url, latitud, longitud)
+	- Amenidades (checklist)
+	- Score de completitud de listado
+- Se agrego modelo tipado para base de datos/formulario:
+	- NewPropertyDraft
+	- PropertyOfferType
+- Navegacion conectada a nueva ruta desde:
+	- Boton "+ Agregar propiedad" en Dashboard
+	- Boton "+ Nueva propiedad" en Gestion de Propiedades
+	- CTA lateral "Agregar Propiedad"
+- Deploy publicado con API base de produccion.
+
+Deploy validado:
+- https://88f80481.nexus-re-web.pages.dev
+
+Pendiente funcional siguiente:
+- Conectar submit de formulario a endpoint real de creacion de propiedades.
 - Iniciar autenticacion y contexto de agencia real.
 
 ### Fecha: 2026-05-27
@@ -357,3 +545,32 @@ Bloqueos:
 Siguientes pasos:
 - Recibir feedback visual y ajustar detalle de la pantalla Super Admin.
 - Conectar acciones del grid de agencias con endpoints reales en siguiente iteracion.
+
+### Fecha: 2026-05-27
+Sesion: 013
+Resumen:
+Se implemento el panel de Agencia/Sub-cuenta usando la plantilla stitch_real_estate_homepage_concept_1, enfocado en Dashboard + Properties + Settings (sin Leads), junto con backend base para metricas y settings.
+
+Acciones ejecutadas:
+- Nuevo frontend de panel de agencia en apps/web con layout tipo dashboard (sidebar, cards KPI, tabla de propiedades, buscador).
+- Integracion frontend con API real usando x-agency-id demo para cargar metricas, propiedades y settings.
+- Implementacion de endpoint GET /v1/agency/dashboard para KPIs de sub-cuenta.
+- Implementacion de endpoints GET/PATCH /v1/agency/settings para configuraciones de portal por agencia.
+- Correccion de error JSX de cierre en App.tsx y validacion TypeScript.
+- Deploy de API en Worker nexus-re-api y deploy de frontend en Pages.
+- Limpieza de despliegues viejos en Pages para evitar confusion (se dejaron solo los activos recientes).
+
+Decisiones tomadas:
+- La pantalla Add New Agency queda en pausa hasta definir flujo exacto de GHL OAuth/sub-cuenta.
+- Se adopta el lenguaje visual del Super Admin como base para el resto de vistas.
+
+Pendientes de acceso:
+- GHL: client_id/client_secret para OAuth.
+
+Bloqueos:
+- Ninguno.
+
+Siguientes pasos:
+- Conectar botones Edit/View/Add Property a formularios reales.
+- Implementar UI de configuraciones de sub-cuenta sobre /v1/agency/settings.
+- Definir y ejecutar flujo real de alta de sub-cuenta cuando se confirme proceso GHL.

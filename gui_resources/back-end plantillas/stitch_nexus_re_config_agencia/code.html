@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Estately - Configuración Estratégica</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#ca8100",
+              "inverse-primary": "#005ac2",
+              "secondary": "#b7c8e1",
+              "on-primary-fixed": "#001a42",
+              "inverse-on-surface": "#2e3038",
+              "inverse-surface": "#e1e2ec",
+              "on-surface": "#e1e2ec",
+              "on-primary-container": "#00285d",
+              "surface-container": "#1d2027",
+              "surface-dim": "#10131a",
+              "surface-container-lowest": "#0b0e15",
+              "primary-fixed": "#d8e2ff",
+              "on-surface-variant": "#c2c6d6",
+              "on-primary": "#002e6a",
+              "on-secondary": "#213145",
+              "surface": "#10131a",
+              "primary": "#adc6ff",
+              "surface-bright": "#363941",
+              "on-secondary-fixed": "#0b1c30",
+              "secondary-fixed-dim": "#b7c8e1",
+              "primary-fixed-dim": "#adc6ff",
+              "on-error": "#690005",
+              "secondary-container": "#3a4a5f",
+              "error-container": "#93000a",
+              "surface-variant": "#32353c",
+              "on-tertiary-fixed-variant": "#653e00",
+              "on-tertiary": "#472a00",
+              "outline-variant": "#424754",
+              "primary-container": "#4d8eff",
+              "surface-container-low": "#191b23",
+              "tertiary-fixed-dim": "#ffb95f",
+              "surface-tint": "#adc6ff",
+              "on-secondary-fixed-variant": "#38485d",
+              "surface-container-high": "#272a31",
+              "on-tertiary-fixed": "#2a1700",
+              "on-tertiary-container": "#3e2400",
+              "on-secondary-container": "#a9bad3",
+              "error": "#ffb4ab",
+              "on-primary-fixed-variant": "#004395",
+              "surface-container-highest": "#32353c",
+              "background": "#10131a",
+              "on-error-container": "#ffdad6",
+              "tertiary-fixed": "#ffddb8",
+              "on-background": "#e1e2ec",
+              "tertiary": "#ffb95f",
+              "secondary-fixed": "#d3e4fe",
+              "outline": "#8c909f"
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+            spacing: {
+              "card-gap": "1rem",
+              "section-margin": "3rem",
+              "gutter": "1.5rem",
+              "container-padding": "2rem",
+              "sidebar-width": "280px"
+            },
+            fontFamily: {
+              "data-table": ["Plus Jakarta Sans"],
+              "display-lg": ["Plus Jakarta Sans"],
+              "body-md": ["Plus Jakarta Sans"],
+              "label-mono": ["JetBrains Mono"],
+              "headline-md": ["Plus Jakarta Sans"]
+            },
+            fontSize: {
+              "data-table": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+              "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+              "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "label-mono": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }],
+              "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Base styles for backdrop filters */
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-panel:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .glass-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-input:focus {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: theme('colors.primary');
+            box-shadow: 0 0 0 1px theme('colors.primary');
+            outline: none;
+        }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Subtle radial gradient background for depth */
+        body {
+            background: radial-gradient(circle at top right, theme('colors.surface-container-high'), theme('colors.background'));
+        }
+        
+        /* Hide scrollbar for cleaner look in nav */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md overflow-hidden antialiased">
+<div class="flex h-screen w-full relative">
+<!-- SideNavBar -->
+<aside class="hidden md:flex w-sidebar-width h-screen fixed left-0 top-0 backdrop-blur-lg bg-surface-container-low/50 dark:bg-surface-container-lowest/50 border-r border-white/5 shadow-2xl flex-col py-6 space-y-2 z-50">
+<!-- Brand Header -->
+<div class="px-6 mb-8 flex items-center space-x-3">
+<div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">real_estate_agent</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Estately</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase opacity-70">Elite CRM</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 flex flex-col space-y-1 mt-4 px-2 no-scrollbar overflow-y-auto">
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-lg mx-2 group" href="#">
+<span class="material-symbols-outlined mr-3 group-hover:text-primary transition-colors" data-icon="dashboard">dashboard</span>
+<span>Panel de Control</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-lg mx-2 group" href="#">
+<span class="material-symbols-outlined mr-3 group-hover:text-primary transition-colors" data-icon="real_estate_agent">real_estate_agent</span>
+<span>Propiedades</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-lg mx-2 group" href="#">
+<span class="material-symbols-outlined mr-3 group-hover:text-primary transition-colors" data-icon="group">group</span>
+<span>Prospectos</span>
+</a>
+<a class="bg-white/10 border-l-4 border-primary text-primary font-semibold flex items-center px-4 py-3 rounded-r-xl mr-2 ml-0 shadow-[inset_1px_0_0_rgba(255,255,255,0.05)]" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="settings" data-weight="fill" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span>Configuración</span>
+</a>
+</nav>
+<!-- Footer Actions -->
+<div class="px-4 mt-auto space-y-1">
+<button class="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 font-label-mono text-label-mono py-3 rounded-lg flex items-center justify-center transition-all shadow-sm">
+<span class="material-symbols-outlined mr-2 text-sm" data-icon="add">add</span>
+                Añadir Propiedad
+            </button>
+<div class="pt-4 border-t border-white/5 mt-4 space-y-1">
+<a class="text-on-surface-variant flex items-center px-4 py-2 hover:bg-white/5 transition-all rounded-lg font-data-table text-data-table" href="#">
+<span class="material-symbols-outlined mr-3 text-lg opacity-70" data-icon="help">help</span>
+                    Soporte
+                </a>
+<a class="text-error/80 hover:text-error flex items-center px-4 py-2 hover:bg-error/10 transition-all rounded-lg font-data-table text-data-table" href="#">
+<span class="material-symbols-outlined mr-3 text-lg opacity-70" data-icon="logout">logout</span>
+                    Cerrar Sesión
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col md:ml-[280px] w-full min-h-screen relative">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-gutter w-full sticky top-0 z-40 h-16 backdrop-blur-xl bg-surface/5 dark:bg-surface-container/10 border-b border-white/10 shadow-sm transition-all">
+<div class="flex-1 max-w-md relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full glass-input rounded-full pl-10 pr-4 py-1.5 text-data-table text-on-surface placeholder-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Buscar configuración..." type="text"/>
+</div>
+<div class="flex items-center space-x-2 ml-auto">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-white/5 transition-colors duration-200 rounded-full relative group">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface shadow-[0_0_8px_theme('colors.error')]"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-white/5 transition-colors duration-200 rounded-full hidden sm:block">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+</button>
+<button class="px-3 py-1.5 text-on-surface-variant hover:text-primary font-data-table text-data-table transition-colors hidden sm:block">
+                    Ayuda
+                </button>
+<div class="h-6 w-px bg-white/10 mx-2 hidden sm:block"></div>
+<button class="w-8 h-8 rounded-full bg-surface-variant border border-white/10 overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all ml-2">
+<div class="w-full h-full bg-gradient-to-br from-primary to-tertiary-container opacity-80 flex items-center justify-center">
+<span class="font-label-mono text-[10px] text-on-primary-fixed font-bold">AD</span>
+</div>
+</button>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto p-container-padding pb-24">
+<!-- Page Title -->
+<div class="mb-section-margin">
+<h2 class="font-display-lg text-display-lg text-on-surface tracking-tight mb-2">Configuración Estratégica</h2>
+<p class="text-on-surface-variant font-body-md text-body-md max-w-2xl">Personalice la identidad visual de su agencia y configure integraciones personalizadas para mejorar la experiencia de sus clientes.</p>
+</div>
+<!-- New Strategic Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-card-gap">
+<!-- Left Column: Branding & Palettes -->
+<div class="lg:col-span-7 flex flex-col gap-card-gap">
+<!-- 1. Agency Branding Block -->
+<div class="glass-panel rounded-xl p-6 space-y-6">
+<div class="flex items-center space-x-3 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-primary">branding_watermark</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Identidad de Marca</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-4">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Logo de la Agencia</label>
+<div class="w-full h-40 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary transition-colors">cloud_upload</span>
+<p class="mt-2 text-xs text-on-surface-variant">Click para subir (PNG, SVG)</p>
+</div>
+</div>
+<div class="space-y-4">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Nombre Comercial</label>
+<input class="w-full glass-input rounded-lg px-4 py-3 text-on-surface" placeholder="Ej: Estately Elite Real Estate" type="text"/>
+<p class="text-[11px] text-on-surface-variant opacity-70">Este nombre aparecerá en todas las comunicaciones externas y facturas.</p>
+</div>
+</div>
+</div>
+<!-- 4. Color Palette Selector -->
+<div class="glass-panel rounded-xl p-6 space-y-6">
+<div class="flex items-center space-x-3 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-primary">palette</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Paletas de Colores</h3>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<!-- Palette 1 -->
+<button class="flex flex-col space-y-3 p-3 rounded-xl border border-white/10 bg-white/5 hover:border-primary transition-all group">
+<div class="grid grid-cols-2 gap-1 w-full aspect-square rounded-lg overflow-hidden">
+<div class="bg-[#adc6ff]"></div>
+<div class="bg-[#1d2027]"></div>
+<div class="bg-[#ffb95f]"></div>
+<div class="bg-[#e1e2ec]"></div>
+</div>
+<span class="font-label-mono text-[10px] text-on-surface-variant group-hover:text-primary uppercase">Modern Elite</span>
+</button>
+<!-- Palette 2 -->
+<button class="flex flex-col space-y-3 p-3 rounded-xl border border-primary bg-primary/10 transition-all group ring-2 ring-primary/20">
+<div class="grid grid-cols-2 gap-1 w-full aspect-square rounded-lg overflow-hidden">
+<div class="bg-[#10B981]"></div>
+<div class="bg-[#064E3B]"></div>
+<div class="bg-[#FCD34D]"></div>
+<div class="bg-[#F3F4F6]"></div>
+</div>
+<span class="font-label-mono text-[10px] text-primary uppercase">Nature Fresh</span>
+</button>
+<!-- Palette 3 -->
+<button class="flex flex-col space-y-3 p-3 rounded-xl border border-white/10 bg-white/5 hover:border-primary transition-all group">
+<div class="grid grid-cols-2 gap-1 w-full aspect-square rounded-lg overflow-hidden">
+<div class="bg-[#EF4444]"></div>
+<div class="bg-[#7F1D1D]"></div>
+<div class="bg-[#1F2937]"></div>
+<div class="bg-[#FFFFFF]"></div>
+</div>
+<span class="font-label-mono text-[10px] text-on-surface-variant group-hover:text-primary uppercase">Urban Bold</span>
+</button>
+<!-- Palette 4 -->
+<button class="flex flex-col space-y-3 p-3 rounded-xl border border-white/10 bg-white/5 hover:border-primary transition-all group">
+<div class="grid grid-cols-2 gap-1 w-full aspect-square rounded-lg overflow-hidden">
+<div class="bg-[#8B5CF6]"></div>
+<div class="bg-[#4C1D95]"></div>
+<div class="bg-[#FBCFE8]"></div>
+<div class="bg-[#111827]"></div>
+</div>
+<span class="font-label-mono text-[10px] text-on-surface-variant group-hover:text-primary uppercase">Luxury Royal</span>
+</button>
+</div>
+</div>
+<!-- 5. Contact Info Block -->
+<div class="glass-panel rounded-xl p-6 space-y-6">
+<div class="flex items-center space-x-3 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-primary">contact_support</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Información de Contacto</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Nombre del Agente Responsable</label>
+<input class="w-full glass-input rounded-lg px-3 py-2 text-on-surface" type="text" value="Adrián Domínguez"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">WhatsApp / Teléfono</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm font-label-mono">+52</span>
+<input class="w-full glass-input rounded-lg pl-12 pr-3 py-2 text-on-surface" type="tel" value="55 1234 5678"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Integrations & Themes -->
+<div class="lg:col-span-5 flex flex-col gap-card-gap">
+<!-- 3. Theme Selector -->
+<div class="glass-panel rounded-xl p-6 space-y-6">
+<div class="flex items-center space-x-3 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-primary">grid_view</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Selector de Tema</h3>
+</div>
+<div class="space-y-4">
+<!-- Theme 1 Active -->
+<div class="relative p-4 rounded-xl border-2 border-primary bg-primary/5 flex items-center justify-between cursor-pointer">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 bg-surface-container rounded-lg border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">dark_mode</span>
+</div>
+<div>
+<p class="font-data-table text-on-surface">Noche Profunda</p>
+<p class="text-[11px] text-on-surface-variant">Interfaz oscura optimizada</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<!-- Theme 2 Selectable -->
+<div class="relative p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 flex items-center justify-between cursor-pointer transition-colors">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 bg-white rounded-lg border border-black/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600">light_mode</span>
+</div>
+<div>
+<p class="font-data-table text-on-surface">Luz Cristalina</p>
+<p class="text-[11px] text-on-surface-variant">Modo claro de alto contraste</p>
+</div>
+</div>
+</div>
+<!-- Theme 3 Coming Soon -->
+<div class="relative p-4 rounded-xl border border-white/5 bg-white/5 flex items-center justify-between opacity-60 grayscale cursor-not-allowed">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 bg-gradient-to-br from-tertiary-container to-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white">auto_awesome</span>
+</div>
+<div>
+<p class="font-data-table text-on-surface">Dinámico (IA)</p>
+<p class="text-[11px] text-on-surface-variant">Adaptación según horario</p>
+</div>
+</div>
+<span class="bg-tertiary-container/20 text-tertiary-fixed text-[9px] px-2 py-0.5 rounded-full font-label-mono font-bold uppercase tracking-wider border border-tertiary-container/30">Próximamente</span>
+</div>
+</div>
+</div>
+<!-- 2. Custom Integration Blocks -->
+<div class="glass-panel rounded-xl p-6 space-y-6 flex-1">
+<div class="flex items-center space-x-3 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-primary">code</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Integraciones Personalizadas</h3>
+</div>
+<div class="space-y-6">
+<!-- Form Snippet -->
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Snippet Formulario HTML</label>
+<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">Lead Capture</span>
+</div>
+<textarea class="w-full glass-input rounded-lg px-3 py-2 text-[12px] font-label-mono text-on-surface h-32 resize-none" placeholder="&lt;form action='...'&gt;...&lt;/form&gt;"></textarea>
+<p class="text-[11px] text-on-surface-variant opacity-70">Pegue el código de su formulario externo (Typeform, HubSpot, etc.)</p>
+</div>
+<!-- Chat Snippet -->
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Snippet Chat Widget</label>
+<span class="text-[10px] text-secondary bg-secondary/10 px-2 py-0.5 rounded">Soporte Vivo</span>
+</div>
+<textarea class="w-full glass-input rounded-lg px-3 py-2 text-[12px] font-label-mono text-on-surface h-32 resize-none" placeholder="&lt;script src='...'&gt;...&lt;/script&gt;"></textarea>
+<p class="text-[11px] text-on-surface-variant opacity-70">Soporta scripts de Tawk.to, WhatsApp Web, Crisp, entre otros.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Save Actions Bar -->
+<div class="mt-8 flex justify-end items-center space-x-4">
+<button class="px-6 py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-data-table transition-all">Cancelar</button>
+<button class="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-on-primary px-8 py-2 rounded-lg font-headline-md text-data-table font-semibold transition-all shadow-lg flex items-center">
+<span class="material-symbols-outlined mr-2 text-sm">save</span>
+                Guardar Cambios de Estrategia
+            </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Estately CRM | Añadir Propiedad</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --sidebar-width: 280px;
+        }
+        body {
+            background: radial-gradient(circle at top right, #1a1f2e, #10131a);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus {
+            border-color: #adc6ff;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(173, 198, 255, 0.2);
+            outline: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#0b0e15",
+                        "surface-container-highest": "#32353c",
+                        "surface": "#10131a",
+                        "on-primary-fixed": "#001a42",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-secondary-container": "#a9bad3",
+                        "on-secondary-fixed": "#0b1c30",
+                        "background": "#10131a",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-primary-container": "#00285d",
+                        "on-surface": "#e1e2ec",
+                        "on-tertiary-container": "#3e2400",
+                        "on-secondary": "#213145",
+                        "surface-container-high": "#272a31",
+                        "outline": "#8c909f",
+                        "inverse-on-surface": "#2e3038",
+                        "surface-container-low": "#191b23",
+                        "surface-bright": "#363941",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary-container": "#3a4a5f",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-dim": "#10131a",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "surface-variant": "#32353c",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "tertiary": "#ffb95f",
+                        "on-error-container": "#ffdad6",
+                        "primary": "#adc6ff",
+                        "inverse-surface": "#e1e2ec",
+                        "secondary": "#b7c8e1",
+                        "on-primary-fixed-variant": "#004395",
+                        "primary-fixed-dim": "#adc6ff",
+                        "inverse-primary": "#005ac2",
+                        "outline-variant": "#424754",
+                        "on-primary": "#002e6a",
+                        "surface-tint": "#adc6ff",
+                        "tertiary-container": "#ca8100",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-surface-variant": "#c2c6d6",
+                        "primary-container": "#4d8eff",
+                        "surface-container": "#1d2027",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-background": "#e1e2ec",
+                        "primary-fixed": "#d8e2ff",
+                        "on-error": "#690005",
+                        "on-tertiary": "#472a00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "section-margin": "3rem",
+                        "gutter": "1.5rem",
+                        "card-gap": "1rem",
+                        "container-padding": "2rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-mono": ["JetBrains Mono"],
+                        "data-table": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "data-table": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-white/5 dark:bg-white/5 backdrop-blur-xl border-r border-white/10 shadow-2xl z-50 transition-all duration-300 hidden md:flex flex-col py-6 px-4">
+<div class="mb-10 px-2">
+<h1 class="font-display-lg text-headline-md font-bold text-primary">Estately CRM</h1>
+<p class="text-on-surface-variant text-sm opacity-60">Elite Performance</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/10 transition-all duration-300 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-primary border-l-4 border-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">domain</span>
+<span>Properties</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/10 transition-all duration-300 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span>Leads</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/10 transition-all duration-300 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-white/5 space-y-2">
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-error/80 hover:bg-error/10 transition-all">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</button>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-var(--sidebar-width))] h-16 bg-white/5 backdrop-blur-lg border-b border-white/10 z-40 flex justify-between items-center px-6 lg:px-10">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input class="glass-input pl-10 pr-4 py-1.5 rounded-full text-sm w-64 focus:w-80 transition-all" placeholder="Buscar propiedades..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4 lg:gap-6">
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">mail</span>
+</button>
+</div>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-on-surface">Alex Rivera</p>
+<p class="text-[10px] text-primary/70 uppercase tracking-wider font-bold">Director Elite</p>
+</div>
+<img alt="Agent Profile" class="w-10 h-10 rounded-full border border-primary/20 object-cover" data-alt="A professional headshot of a sophisticated male real estate agent in his late 30s, wearing a tailored navy suit and looking confidently into the camera. The lighting is crisp and modern with a cool office background slightly out of focus. High-end professional aesthetic with a clean, dark atmosphere consistent with a premium CRM interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTgb__Qqg7Idio8xNwuXWox4s8NGqiUbObg1BqROZdfCmJIEDQke4Xo-NaZBjLtmC4kvQdhioOyb8jxtKdH68p083PGzHWfkXyUu2SgM6ja1Xj36xGZzYhkFpFSiFWO4rNuWqUq5uhjI1LjX45ib7BIoPalg9RtdkB2SJ3nq4Tv-G8uvsQyykdu95QoYUO22n7BvcRxnnmLsZNaU1elQwsM0yL_ZUyE3sLqWo-hTvLs1egTf1qb_qMN1Mvc1blN3SMGkdm2LXJdQ"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-12 px-6 lg:px-10 md:ml-sidebar-width min-h-screen">
+<div class="max-w-6xl mx-auto">
+<!-- Header Action Area -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+<div>
+<h2 class="font-display-lg text-4xl text-on-surface mb-2">Añadir Propiedad</h2>
+<p class="text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">info</span>
+                        Complete los detalles para publicar en el catálogo global de Estately.
+                    </p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-6 py-2.5 rounded-xl border border-white/10 text-on-surface hover:bg-white/5 transition-all text-sm font-semibold">
+                        Guardar Borrador
+                    </button>
+<button class="px-8 py-2.5 rounded-xl bg-primary text-on-primary-fixed font-bold hover:shadow-[0_0_20px_rgba(173,198,255,0.4)] transition-all text-sm flex items-center gap-2 group">
+<span>Publicar Propiedad</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">send</span>
+</button>
+</div>
+</div>
+<!-- Bento-style Grid Form -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Left Column: Main Info & Pricing -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- Section 1: Principal Info -->
+<section class="glass-panel rounded-3xl p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">description</span>
+</span>
+<h3 class="font-headline-md text-xl">Información Principal</h3>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-1">Título de la Propiedad</label>
+<input class="w-full glass-input rounded-xl px-4 py-3 text-on-surface" placeholder="Ej: Villa Lujosa frente al Mar - Marbella" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-1">Descripción Detallada</label>
+<textarea class="w-full glass-input rounded-xl px-4 py-3 text-on-surface resize-none" placeholder="Describa los aspectos más destacados, acabados y entorno..." rows="4"></textarea>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-1">Etiquetas (Tags)</label>
+<div class="flex flex-wrap gap-2 p-2 glass-input rounded-xl min-h-[50px] items-center">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2">
+                                        Lujo <button class="hover:text-on-surface">×</button>
+</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2">
+                                        Vista al Mar <button class="hover:text-on-surface">×</button>
+</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm flex-1 min-w-[100px]" placeholder="Añadir..." type="text"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Type & Pricing -->
+<section class="glass-panel rounded-3xl p-8">
+<div class="flex items-center gap-3 mb-8">
+<span class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">sell</span>
+</span>
+<h3 class="font-headline-md text-xl">Tipo de Oferta y Precios</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="relative group cursor-pointer">
+<input checked="" class="peer hidden" id="venta" name="offer_type" type="radio"/>
+<label class="block p-4 rounded-2xl glass-input text-center peer-checked:border-primary peer-checked:bg-primary/10 transition-all" for="venta">
+<span class="material-symbols-outlined block text-3xl mb-2 text-on-surface-variant peer-checked:text-primary">payments</span>
+<span class="text-sm font-bold">Venta</span>
+</label>
+</div>
+<div class="relative group cursor-pointer">
+<input class="peer hidden" id="renta" name="offer_type" type="radio"/>
+<label class="block p-4 rounded-2xl glass-input text-center peer-checked:border-primary peer-checked:bg-primary/10 transition-all" for="renta">
+<span class="material-symbols-outlined block text-3xl mb-2 text-on-surface-variant peer-checked:text-primary">calendar_month</span>
+<span class="text-sm font-bold">Renta</span>
+</label>
+</div>
+<div class="relative group cursor-pointer">
+<input class="peer hidden" id="ambos" name="offer_type" type="radio"/>
+<label class="block p-4 rounded-2xl glass-input text-center peer-checked:border-primary peer-checked:bg-primary/10 transition-all" for="ambos">
+<span class="material-symbols-outlined block text-3xl mb-2 text-on-surface-variant peer-checked:text-primary">dynamic_form</span>
+<span class="text-sm font-bold">Ambos</span>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div id="price_venta_field">
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-1">Precio de Venta (USD)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">$</span>
+<input class="w-full glass-input rounded-xl pl-8 pr-4 py-3 text-on-surface" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div id="price_renta_field">
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-1">Precio de Renta (USD/mes)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">$</span>
+<input class="w-full glass-input rounded-xl pl-8 pr-4 py-3 text-on-surface" placeholder="0.00" type="number"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Multimedia -->
+<section class="glass-panel rounded-3xl p-8">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">photo_library</span>
+</span>
+<h3 class="font-headline-md text-xl">Multimedia</h3>
+</div>
+<span class="text-xs text-on-surface-variant">Máx. 20 fotos (20MB)</span>
+</div>
+<div class="border-2 border-dashed border-white/10 rounded-2xl p-10 text-center hover:border-primary/40 hover:bg-white/5 transition-all group cursor-pointer">
+<input class="hidden" id="file_upload" multiple="" type="file"/>
+<label class="cursor-pointer" for="file_upload">
+<span class="material-symbols-outlined text-5xl text-primary/50 mb-4 group-hover:scale-110 transition-transform block">cloud_upload</span>
+<p class="text-on-surface font-semibold mb-1">Arrastre sus imágenes aquí</p>
+<p class="text-on-surface-variant text-sm">o haga clic para seleccionar desde su dispositivo</p>
+</label>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+<div class="aspect-square rounded-xl overflow-hidden glass-panel relative group">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A cinematic architectural shot of a minimalist luxury modern villa with large floor-to-ceiling glass windows at twilight. The interior lighting casts a warm, inviting glow onto a sleek marble pool deck. The color palette is dominated by deep blues, dark slates, and warm ambers, reflecting a high-end property listing aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_Pq9aVBpE6HYy-fZAgjUSGkg--Gd-o7KcHBAX83JFp9ckA1AcwYYF7cqGRur4Sf-bVhB7e6ZirYgxT53TppfuY7CtYPKMd61Usd8lOf1ehrwFfFyt0Kf-DHdFN1_Rte9ZiA7HWkywqohIkVOyEj4ZPxGuf6VlCDzFHSuCPJXxtz_gzOe-rjtVurd8RDphRSM5NrhEcUVkfuh8ZWgbUnZnCpg_DF36w-wNUkT8LTkDLRHiJdcO1dY3uNhQxxI_N7SVXHP306dfhA"/>
+<button class="absolute top-2 right-2 p-1 bg-surface-container-highest rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 bg-primary/80 text-on-primary-fixed text-[10px] font-bold rounded">PRINCIPAL</div>
+</div>
+<!-- Placeholders for more items -->
+<div class="aspect-square rounded-xl border border-white/5 flex items-center justify-center bg-white/2 cursor-pointer hover:bg-white/5">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Location & Amenities -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- Section 5: Ubicación -->
+<section class="glass-panel rounded-3xl p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">location_on</span>
+</span>
+<h3 class="font-headline-md text-xl">Ubicación</h3>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-1">Enlace de Google Maps</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">link</span>
+<input class="w-full glass-input rounded-xl pl-11 pr-4 py-3 text-on-surface text-sm" placeholder="Pegue la URL aquí..." type="text"/>
+</div>
+</div>
+<div class="rounded-2xl overflow-hidden border border-white/10 relative h-64">
+<img class="w-full h-full object-cover opacity-60 grayscale" data-alt="A stylized, high-contrast digital map interface showing a city grid from a bird's-eye view. The map uses a dark mode aesthetic with charcoal streets and glowing blue data highlights for points of interest. Subtle glass overlays and elegant UI elements for location marking are present, creating a professional real estate tool atmosphere." data-location="Madrid, Spain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHRzCu4KjlfHBRNjOLpmUN9lgVY1OJiTWiQd1qsD9o-2Xx0SEGGgRAvnOwU_NznAHETu9fJilKQVIICFbwjRxjblumDRI1DSe56yswbchsozGoLKptXu4pw8sTlvAdQ1dozo9e2FNvELCU8G8Kas_OU6qnJ3zgkVmXE1HQ7dHVeBblFDRVL0ynnlTEmDb5n1vc3iwdMh0Kixv4kXJkkVf5adVzTLOdubeygdQZw4h537mFlhfGzhnGYBLlXGtNr_36StrHs1E0uQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-surface/90 backdrop-blur rounded-full border border-white/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">pin_drop</span>
+<span class="text-xs font-bold">Marbella, España</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<input class="w-full glass-input rounded-xl px-4 py-2 text-xs" placeholder="Latitud" type="text"/>
+<input class="w-full glass-input rounded-xl px-4 py-2 text-xs" placeholder="Longitud" type="text"/>
+</div>
+</div>
+</section>
+<!-- Section 6: Amenidades -->
+<section class="glass-panel rounded-3xl p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">hotel_class</span>
+</span>
+<h3 class="font-headline-md text-xl">Amenidades</h3>
+</div>
+<div class="space-y-3">
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">pool</span>
+<span class="text-sm font-medium">Piscina Infinita</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="w-5 h-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">fitness_center</span>
+<span class="text-sm font-medium">Gimnasio Privado</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">shield</span>
+<span class="text-sm font-medium">Seguridad 24/7</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="w-5 h-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">garage</span>
+<span class="text-sm font-medium">Garaje (3 vehículos)</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="w-5 h-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">deck</span>
+<span class="text-sm font-medium">Terraza Solárium</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<input class="w-5 h-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">wine_bar</span>
+<span class="text-sm font-medium">Cava de Vinos</span>
+</label>
+</div>
+<button class="w-full mt-6 py-2 rounded-xl border border-dashed border-white/20 text-on-surface-variant text-xs font-bold hover:border-primary/40 hover:text-on-surface transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                            AÑADIR OTRA AMENIDAD
+                        </button>
+</section>
+<!-- Quick Stats Panel -->
+<section class="glass-panel rounded-3xl p-6 bg-primary/5 border-primary/20">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span class="text-sm font-bold text-primary tracking-wide">PUNTUACIÓN DE LISTADO</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden mb-2">
+<div class="h-full bg-primary w-[75%] shadow-[0_0_10px_rgba(173,198,255,0.5)]"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant mb-4">Su listado está un <span class="text-primary font-bold">75%</span> optimizado para motores de búsqueda.</p>
+<ul class="text-[11px] space-y-2 text-on-surface/80">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Título optimizado</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Ubicación verificada</li>
+<li class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">circle</span> Añada al menos 5 fotos más</li>
+</ul>
+</section>
+</div>
+</div>
+<!-- Footer Bottom Mobile Navigation (Hidden on Desktop) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full h-16 glass-panel border-t border-white/10 flex items-center justify-around z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">domain</span>
+<span class="text-[10px]">Propiedades</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px]">Dashboard</span>
+</button>
+<button class="w-12 h-12 -mt-10 bg-primary text-on-primary-fixed rounded-full shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person_search</span>
+<span class="text-[10px]">Leads</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px]">Ajustes</span>
+</button>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions and Atmospheric Effects
+        document.addEventListener('DOMContentLoaded', () => {
+            // Price fields toggling based on selection
+            const saleRadio = document.getElementById('venta');
+            const rentRadio = document.getElementById('renta');
+            const bothRadio = document.getElementById('ambos');
+            const saleField = document.getElementById('price_venta_field');
+            const rentField = document.getElementById('price_renta_field');
+
+            function updatePricingFields() {
+                if (saleRadio.checked) {
+                    saleField.style.opacity = '1';
+                    rentField.style.opacity = '0.3';
+                    rentField.style.pointerEvents = 'none';
+                } else if (rentRadio.checked) {
+                    saleField.style.opacity = '0.3';
+                    saleField.style.pointerEvents = 'none';
+                    rentField.style.opacity = '1';
+                    rentField.style.pointerEvents = 'auto';
+                } else {
+                    saleField.style.opacity = '1';
+                    saleField.style.pointerEvents = 'auto';
+                    rentField.style.opacity = '1';
+                    rentField.style.pointerEvents = 'auto';
+                }
+            }
+
+            [saleRadio, rentRadio, bothRadio].forEach(radio => {
+                radio.addEventListener('change', updatePricingFields);
+            });
+
+            // Parallax movement for background blur spots (Atmospheric)
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                // This would normally target specific blur elements if present
+            });
+
+            updatePricingFields();
+        });
+    </script>
+</body></html>

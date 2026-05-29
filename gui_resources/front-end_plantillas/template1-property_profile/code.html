@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Property Details - Estately</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for deep slate theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #10131a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #32353c; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #424754; 
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "tertiary-container": "#ca8100",
+                            "primary-fixed": "#d8e2ff",
+                            "surface-container": "#1d2027",
+                            "tertiary-fixed": "#ffddb8",
+                            "on-primary": "#002e6a",
+                            "surface-dim": "#10131a",
+                            "outline": "#8c909f",
+                            "on-surface-variant": "#c2c6d6",
+                            "inverse-on-surface": "#2e3038",
+                            "background": "#10131a",
+                            "surface-container-highest": "#32353c",
+                            "on-secondary-fixed": "#0b1c30",
+                            "on-tertiary-container": "#3e2400",
+                            "on-error-container": "#ffdad6",
+                            "surface-container-low": "#191b23",
+                            "primary-container": "#4d8eff",
+                            "on-tertiary-fixed-variant": "#653e00",
+                            "surface-container-high": "#272a31",
+                            "inverse-surface": "#e1e2ec",
+                            "surface-variant": "#32353c",
+                            "on-secondary-fixed-variant": "#38485d",
+                            "tertiary-fixed-dim": "#ffb95f",
+                            "error": "#ffb4ab",
+                            "outline-variant": "#424754",
+                            "on-tertiary-fixed": "#2a1700",
+                            "error-container": "#93000a",
+                            "on-error": "#690005",
+                            "surface-container-lowest": "#0b0e15",
+                            "on-primary-container": "#00285d",
+                            "inverse-primary": "#005ac2",
+                            "surface-bright": "#363941",
+                            "on-background": "#e1e2ec",
+                            "surface": "#10131a",
+                            "on-secondary": "#213145",
+                            "on-primary-fixed-variant": "#004395",
+                            "on-primary-fixed": "#001a42",
+                            "secondary-fixed-dim": "#b7c8e1",
+                            "on-surface": "#e1e2ec",
+                            "on-tertiary": "#472a00",
+                            "secondary-container": "#3a4a5f",
+                            "secondary": "#b7c8e1",
+                            "secondary-fixed": "#d3e4fe",
+                            "tertiary": "#ffb95f",
+                            "surface-tint": "#adc6ff",
+                            "primary": "#adc6ff",
+                            "on-secondary-container": "#a9bad3",
+                            "primary-fixed-dim": "#adc6ff"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "container-padding": "2rem",
+                            "card-gap": "1rem",
+                            "section-margin": "3rem",
+                            "gutter": "1.5rem",
+                            "sidebar-width": "280px"
+                    },
+                    "fontFamily": {
+                            "body-md": [
+                                    "Plus Jakarta Sans"
+                            ],
+                            "data-table": [
+                                    "Plus Jakarta Sans"
+                            ],
+                            "display-lg": [
+                                    "Plus Jakarta Sans"
+                            ],
+                            "label-mono": [
+                                    "JetBrains Mono"
+                            ],
+                            "headline-md": [
+                                    "Plus Jakarta Sans"
+                            ]
+                    },
+                    "fontSize": {
+                            "body-md": [
+                                    "16px",
+                                    {
+                                            "lineHeight": "24px",
+                                            "fontWeight": "400"
+                                    }
+                            ],
+                            "data-table": [
+                                    "14px",
+                                    {
+                                            "lineHeight": "20px",
+                                            "fontWeight": "500"
+                                    }
+                            ],
+                            "display-lg": [
+                                    "48px",
+                                    {
+                                            "lineHeight": "56px",
+                                            "letterSpacing": "-0.02em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "label-mono": [
+                                    "12px",
+                                    {
+                                            "lineHeight": "16px",
+                                            "letterSpacing": "0.05em",
+                                            "fontWeight": "500"
+                                    }
+                            ],
+                            "headline-md": [
+                                    "24px",
+                                    {
+                                            "lineHeight": "32px",
+                                            "fontWeight": "600"
+                                    }
+                            ]
+                    }
+            },
+                },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-container-padding h-20 w-full transition-all duration-300">
+<div class="flex items-center gap-8">
+<a class="font-display-lg text-display-lg font-bold text-on-surface tracking-tight scale-95 active:scale-90 transition-transform" href="#">Estately</a>
+<div class="hidden md:flex gap-6">
+<a class="font-label-mono text-label-mono text-primary border-b-2 border-primary pb-1" href="#">Listings</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:bg-white/10 hover:text-on-surface transition-all duration-300 rounded px-2 py-1" href="#">Portfolio</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:bg-white/10 hover:text-on-surface transition-all duration-300 rounded px-2 py-1" href="#">Advisors</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:bg-white/10 hover:text-on-surface transition-all duration-300 rounded px-2 py-1" href="#">Insights</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block font-label-mono text-label-mono bg-primary text-on-primary px-4 py-2 rounded-full hover:bg-primary-container transition-colors shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">List a Property</button>
+<div class="flex gap-2 text-on-surface-variant">
+<button aria-label="notifications" class="p-2 hover:bg-white/10 hover:text-on-surface rounded-full transition-all duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="favorite" class="p-2 hover:bg-white/10 hover:text-on-surface rounded-full transition-all duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<img alt="Agent Profile" class="w-10 h-10 rounded-full object-cover border border-white/20 ml-2" data-alt="A professional headshot of a real estate agent. They are wearing a sharp, modern business suit. The background is a subtly blurred office setting with cool, elite lighting. The overall tone is confident and trustworthy, fitting the high-end, glassmorphism CRM aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6-ZDrz9DIk7a8BPwmZ0yeQE2kReOtBIKsPw04VwHbUBuxFvPCE6pJmeXwOqoV2axMFfhi_uCj8gbtqxgSGeaJ0AtOCxnpuY5YiKYDGu6Z9yeFfD53xKcgEshh1tRpQHzWaxB9meWjkHc4y0p8KbuhO6A2mK1roCdXnPFKP4eayOK3Oc3uAaGHzeniFjFBqXe7fzedJ9heeUYwuANz-8W5BquDFMA_1vN4MNRH8RbGxrWeGA7bd-vdeRNUp9kUG1s_zDZm7RzV4A"/>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[104px] pb-section-margin px-container-padding max-w-[1600px] mx-auto w-full">
+<!-- Header & Breadcrumb -->
+<div class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+<div>
+<nav class="flex text-on-surface-variant font-label-mono text-label-mono mb-2">
+<a class="hover:text-primary transition-colors" href="#">Listings</a>
+<span class="mx-2">/</span>
+<a class="hover:text-primary transition-colors" href="#">Guatemala</a>
+<span class="mx-2">/</span>
+<span class="text-on-surface">Antigua</span>
+</nav>
+<h1 class="font-display-lg text-display-lg font-bold text-on-surface tracking-tight leading-tight">Casa de los Sueños</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                    4a Calle Oriente, Antigua Guatemala, Sacatepéquez
+                </p>
+</div>
+<div class="flex gap-3">
+<span class="bg-emerald-500/15 text-emerald-400 border-l-2 border-emerald-500 px-3 py-1 font-label-mono text-label-mono rounded-r uppercase tracking-wider flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Active
+                </span>
+<button class="bg-white/5 border border-white/20 text-on-surface px-4 py-2 rounded hover:bg-white/10 transition-colors font-label-mono text-label-mono flex items-center gap-2 backdrop-blur-md">
+<span class="material-symbols-outlined text-[18px]">share</span> Share
+                </button>
+</div>
+</div>
+<!-- Split Gallery -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-card-gap h-[614px] min-h-[500px] mb-8">
+<!-- Main Large Image -->
+<div class="lg:col-span-8 rounded-xl overflow-hidden relative group">
+<img alt="Main Property View" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A stunning, wide-angle architectural photograph of a luxury estate's exterior and expansive pool area at twilight. The lighting is dramatic, with warm interior lights glowing against the cool, deep blue evening sky. The design reflects modern elegance, fitting perfectly within an elite, high-performance real estate interface. The aesthetic is clean, sophisticated, and deeply atmospheric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvCcVdBc1g_PGtUKYk5KyEKU8iZ4p4F9LBtbSQWB6dRNzimcHFVCUozSm-7VmE3VfBWm4o1Tb0byCEAmIgjyUu7X1chcFE8LW6dopNKPzAJH2WE1IaOeilYzDng_3JQ7LmmNFd5ZekMuP1vx92UXd6AI1I00c1cD2r0qEqpJ8xiHprl5_6z23vn6TWVsqWUy-LKy004kXgbZeJmM8K4ZW4Ynrh7aj_Z5Q6Ss1I5pCd1nJkAVwJpJFLRDh0anJ6ghPNH0CV2QidBQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60"></div>
+<div class="absolute bottom-4 right-4 bg-surface-container-highest/80 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg font-label-mono text-label-mono text-on-surface flex items-center gap-2 cursor-pointer hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">fullscreen</span> View All Photos (24)
+                </div>
+</div>
+<!-- 2x2 Detail Grid -->
+<div class="lg:col-span-4 grid grid-cols-2 grid-rows-2 gap-card-gap">
+<div class="rounded-xl overflow-hidden relative group">
+<img alt="Living Room" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A beautifully designed modern living room with floor-to-ceiling glass windows overlooking a lush garden. The furniture is high-end, featuring sleek lines and neutral tones with subtle, luxurious textures. Soft, natural daylight floods the space. The mood is tranquil and premium, matching the dark-mode CRM's sophisticated visual language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs7_ZfGhoPqwsDI6wxyq3eWasnbPbRCXpk7AhABo_XOea_BZHX2r5orUhsjXRgdIcXNI1uB9_8hI1d-XBz35XA0qzkF-I36xbhrvCLT-cdygQ-euHR7DXzAOxoWCETLx5olBJKPFLDE3OcDRgWZTNe5yhZwbEIWHoEMBEOxTzWwwA1lcWQEchl02i1hXrBAlL7_7XVbwU_k9TOts81nuOyjatSUEID0PhHgPUdX0hceipILqIgMjSzabctTSKC1hJJa9TYJ70VvA"/>
+</div>
+<div class="rounded-xl overflow-hidden relative group">
+<img alt="Kitchen" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A state-of-the-art chef's kitchen featuring dark matte cabinetry, a massive marble island, and professional-grade stainless steel appliances. Recessed lighting and under-cabinet glow create a warm, inviting atmosphere. The design is immaculate and highly functional, conveying an elite, high-performance standard appropriate for a luxury real estate platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKXRWXY_cd2ZAwlVnjPqoMyy5Dz1UJU_qMQctd3IJLzeSwxb38M7nNA1lX6M7DtkmEXay5WIU32wsZmXVqecCqPvUyo-H8Jz19FUlq22mdBM2EqXjvv3_5Ldy_HlRkYij6HExYV_eKR_7f74w_Xm--mG_-O_7_Kvz7y7Mk_ALgCMxNmGvbxjz398UHcN1st6R6m7MU5jIgSPlvfEOrKmW5M-Sn2uIuFWU6dSsWlVbMN-T1QpZYn39asp210R3GXtWrlOumpEKueQ"/>
+</div>
+<div class="rounded-xl overflow-hidden relative group">
+<img alt="Master Bedroom" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A luxurious master bedroom suite with a king-sized bed, plush bedding, and an expansive view of a distant cityscape. The lighting is dim and intimate, with modern sconces casting soft, warm light. The aesthetic is serene, structured, and sophisticated, aligning perfectly with the deep slate and glassmorphism styling of the application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByQKLPWDEI2f1TKUdSSVCY9gQRp7I0iF-CBO0RkuEwwBf42SEgyZ5HRoWXLABZ_Do8QEKTHNbQGOmseIFZGeZyUuCVWjdiIoWkKMIo47P7b_jgui_NPdF9LkSNsh6C9FwPbLgC_Yx65d8eArskBe7y6NV63OLRjYCwUB7x0Rp6TU26tLkqGk4BbhOQFQ628Yame7rCJ8sap0V3427Uo7NMTwPbN5Yl6nUnp-ZVp013Gyr14ADsM8w7TvtKmPs5NqMptuHp__uthg"/>
+</div>
+<div class="rounded-xl overflow-hidden relative group">
+<img alt="Bathroom" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A spa-like, minimalist bathroom featuring a freestanding soaking tub, sleek floating vanity, and dark slate tiles. The atmosphere is calm and restorative, illuminated by subtle ambient lighting. The high-end fixtures and clean lines emphasize a modern, elite lifestyle, complementing the application's premium visual design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjoGUK1USVEQlQdzFImnelstZMHlmos0cRnfcUw4THXCtCR1feJ_GVW_oyPEEk2oCFDQt4f9SnH6-XBZxP_X3NMClzLaFtwYzNw-OUFL2XUiQkFzXpi4sxsPbdwv32YKYi38Zpi0ZtYZsg0g5tcNo6MYGGL4ZRKtb7hKWEk6kZ67qepYNhFTHttIGjTYARxUtvrdoXtdeZt45ldz00JoCaKHjT5IgB4vCYsOuGhs2E7o92Iepw78vft8pik93nNr4IJXrLObdpYw"/>
+</div>
+</div>
+</div>
+<!-- Prominent Pricing Bar -->
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center shadow-lg relative overflow-hidden group hover:bg-white/[0.08] transition-all duration-300">
+<!-- Subtle gradient glow effect behind -->
+<div class="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-[60px] pointer-events-none"></div>
+<div class="flex flex-col gap-1 z-10">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Listing Price</span>
+<div class="flex items-baseline gap-4">
+<span class="font-display-lg text-[40px] font-bold text-on-surface leading-none">$2,450,000 <span class="text-xl text-on-surface-variant font-normal">USD</span></span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant mt-1">Approx. Q 19,150,000 GTQ</span>
+</div>
+<div class="mt-6 md:mt-0 flex gap-4 z-10 w-full md:w-auto">
+<button class="flex-1 md:flex-none bg-primary text-on-primary font-headline-md text-[16px] px-8 py-4 rounded-lg hover:bg-primary-container transition-colors shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] flex justify-center items-center gap-2">
+                    Submit Offer
+                </button>
+</div>
+</div>
+<!-- Content Split Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Data Column (Left) -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Quick Stats Bento Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container/50 backdrop-blur-md border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary mb-2 text-[28px]">bed</span>
+<span class="font-headline-md text-headline-md text-on-surface">5</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Bedrooms</span>
+</div>
+<div class="bg-surface-container/50 backdrop-blur-md border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary mb-2 text-[28px]">shower</span>
+<span class="font-headline-md text-headline-md text-on-surface">6.5</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Bathrooms</span>
+</div>
+<div class="bg-surface-container/50 backdrop-blur-md border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary mb-2 text-[28px]">square_foot</span>
+<span class="font-headline-md text-headline-md text-on-surface">8,500</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Sq Ft</span>
+</div>
+<div class="bg-surface-container/50 backdrop-blur-md border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary mb-2 text-[28px]">landscape</span>
+<span class="font-headline-md text-headline-md text-on-surface">2.4</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Acres Lot</span>
+</div>
+</div>
+<!-- Description -->
+<div class="bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-xl p-8">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Property Overview</h2>
+<div class="space-y-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+<p>
+                            Nestled in the heart of historic Antigua, Casa de los Sueños is a masterclass in blending colonial heritage with contemporary luxury. This expansive estate has been meticulously restored, offering an unparalleled living experience characterized by high-end finishes, soaring ceilings, and seamless indoor-outdoor integration.
+                        </p>
+<p>
+                            The property centers around a stunning internal courtyard featuring a heated lap pool, lush indigenous landscaping, and multiple shaded alfresco dining areas. The chef's kitchen is equipped with top-of-the-line appliances, custom cabinetry, and a massive marble island, perfect for entertaining large gatherings.
+                        </p>
+</div>
+<button class="mt-4 font-label-mono text-label-mono text-primary hover:text-primary-container transition-colors flex items-center gap-1">
+                        Read Full Description <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+<!-- Features Grid -->
+<div class="bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-xl p-8">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6">Key Amenities</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">pool</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Heated Lap Pool</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">wine_bar</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Temperature-Controlled Wine Cellar</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Fully Integrated Smart Home System</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">garage</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">4-Car Enclosed Garage</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">security</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">24/7 Monitored Security</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">fitness_center</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Private Gym &amp; Sauna</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Agent & Actions Sidebar (Right) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Agent Box -->
+<div class="bg-white/[0.05] backdrop-blur-2xl border border-white/20 rounded-xl p-6 sticky top-[104px]">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest mb-6 border-b border-white/10 pb-2">Listing Advisor</h3>
+<div class="flex items-center gap-4 mb-6">
+<div class="relative">
+<img alt="Sarah Jenkins" class="w-16 h-16 rounded-full object-cover border-2 border-primary" data-alt="A portrait of a confident female real estate advisor. She is dressed in a sophisticated, dark tailored suit. The background is a sleek, modern architectural space with glass panels. The lighting is cinematic and cool, aligning with the platform's elite, transparent aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvw2C0KN9zpsDPsa1fPjfm0xSnsExznnsXiAw6J5aLBsW9KMwrLMp8p-ASA80ZGEybRrZiqlfse5coOXNurV5BSL0Duu1HMUXZk6d1obIq7fKKh0oOhlPzWV2QRbIVus57Uht1bhl49MLrYoo3wKm1atsMWqm4ol2K9kIKjt53QaSOAJ_7At8pXJgxZHzAMYylFO2-N06KW1JYvfw44z95m0197VLIJ27_g0yhPMrOhQFDneuIsog40RpBQbgRHVq99BbR_7FY-g"/>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#1d2027]"></div>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface">Sarah Jenkins</h4>
+<p class="font-body-md text-body-md text-primary">Senior Managing Director</p>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center gap-3 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+<a class="hover:text-primary transition-colors" href="mailto:sarah@estately.com">sarah@estately.com</a>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-[20px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+15550192837">+1 (555) 019-2837</a>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Custom WhatsApp Button -->
+<button class="w-full bg-[#25D366]/20 border border-[#25D366]/50 text-[#25D366] hover:bg-[#25D366]/30 px-4 py-3 rounded-lg font-headline-md text-[16px] transition-all duration-300 flex items-center justify-center gap-2">
+<!-- Basic WhatsApp SVG path for standalone icon needs -->
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"></path>
+</svg>
+                            Message on WhatsApp
+                        </button>
+<button class="w-full bg-white/5 border border-white/20 text-on-surface hover:bg-white/10 px-4 py-3 rounded-lg font-headline-md text-[16px] transition-all duration-300">
+                            Schedule Viewing
+                        </button>
+</div>
+</div>
+<!-- Structured Data / Info Card -->
+<div class="bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-xl p-6">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest mb-4">Property Details</h3>
+<div class="space-y-4 font-data-table text-data-table">
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">Property Type</span>
+<span class="text-on-surface">Single Family Home</span>
+</div>
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">Year Built</span>
+<span class="text-on-surface">2018</span>
+</div>
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">HOA Fees</span>
+<span class="text-on-surface">$1,200 / month</span>
+</div>
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">MLS Number</span>
+<span class="text-on-surface font-label-mono">GT-849201</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Days on Market</span>
+<span class="text-on-surface">14</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-white/5 grid grid-cols-1 md:grid-cols-4 gap-gutter px-container-padding py-section-margin max-w-7xl mx-auto mt-auto">
+<div class="col-span-1 md:col-span-4 mb-4">
+<span class="font-display-lg text-display-lg text-on-surface">Estately</span>
+</div>
+<div class="col-span-1 md:col-span-2 font-body-md text-body-md text-on-surface-variant opacity-80 hover:opacity-100 transition-opacity">
+            © 2024 Estately Luxury Real Estate. All rights reserved.
+        </div>
+<div class="col-span-1 md:col-span-2 flex flex-wrap gap-4 md:justify-end">
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Cookie Policy</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Accessibility</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Press</a>
+</div>
+</footer>
+</body></html>

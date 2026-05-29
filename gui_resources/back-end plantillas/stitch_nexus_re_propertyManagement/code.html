@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Property Management - Estately</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e1e2ec",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#3e2400",
+                        "surface-variant": "#32353c",
+                        "surface-container-highest": "#32353c",
+                        "surface-bright": "#363941",
+                        "secondary": "#b7c8e1",
+                        "primary": "#adc6ff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-surface-variant": "#c2c6d6",
+                        "tertiary-container": "#ca8100",
+                        "secondary-container": "#3a4a5f",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-surface": "#e1e2ec",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface": "#10131a",
+                        "outline-variant": "#424754",
+                        "surface-container-high": "#272a31",
+                        "primary-fixed": "#d8e2ff",
+                        "primary-container": "#4d8eff",
+                        "error-container": "#93000a",
+                        "surface-container": "#1d2027",
+                        "secondary-fixed": "#d3e4fe",
+                        "inverse-on-surface": "#2e3038",
+                        "on-secondary": "#213145",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "surface-container-low": "#191b23",
+                        "on-primary-fixed": "#001a42",
+                        "on-tertiary": "#472a00",
+                        "on-primary": "#002e6a",
+                        "on-background": "#e1e2ec",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#adc6ff",
+                        "tertiary": "#ffb95f",
+                        "surface-tint": "#adc6ff",
+                        "on-secondary-container": "#a9bad3",
+                        "surface-container-lowest": "#0b0e15",
+                        "on-primary-container": "#00285d",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-dim": "#10131a",
+                        "outline": "#8c909f",
+                        "background": "#10131a",
+                        "inverse-primary": "#005ac2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1.5rem",
+                        "card-gap": "1rem",
+                        "section-margin": "3rem",
+                        "sidebar-width": "280px",
+                        "container-padding": "2rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "data-table": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "data-table": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-input:focus {
+            border-color: #adc6ff;
+            box-shadow: 0 0 0 2px rgba(173, 198, 255, 0.2);
+        }
+        .table-row-glass {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .table-row-glass:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex selection:bg-primary selection:text-on-primary">
+<!-- Background Pattern/Glow -->
+<div class="fixed inset-0 z-[-1] pointer-events-none">
+<div class="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-secondary/5 blur-[100px]"></div>
+</div>
+<!-- SideNavBar -->
+<aside class="hidden xl:flex flex-col bg-surface-container-low/50 dark:bg-surface-container-lowest/50 w-sidebar-width h-screen fixed left-0 top-0 backdrop-blur-lg bg-surface-container/10 backdrop-blur-xl border-r border-white/5 shadow-2xl py-6 space-y-2 z-50">
+<div class="px-6 mb-8 flex items-center space-x-3">
+<div class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" data-icon="home_work">home_work</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Estately</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Elite CRM</p>
+</div>
+</div>
+<div class="px-4 mb-6">
+<button class="w-full flex items-center justify-center space-x-2 bg-primary text-on-primary py-3 px-4 rounded-xl font-body-md text-body-md font-semibold shadow-[0_0_15px_rgba(173,198,255,0.3)] hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span>Add Property</span>
+</button>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-xl font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="bg-white/10 border-l-4 border-primary text-primary font-semibold flex items-center px-4 py-3 rounded-r-xl font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="real_estate_agent">real_estate_agent</span>
+                Properties
+            </a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-xl font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="group">group</span>
+                Leads
+            </a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-xl font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="px-4 mt-auto space-y-1">
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-xl font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="help">help</span>
+                Support
+            </a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-white/5 transition-all rounded-xl font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="logout">logout</span>
+                Log Out
+            </a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="flex-1 xl:ml-sidebar-width flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface/5 dark:bg-surface-container/10 w-full h-16 backdrop-blur-xl bg-surface-container/5 backdrop-blur-md border-b border-white/10 shadow-sm flex justify-between items-center px-gutter sticky top-0 z-40">
+<div class="flex items-center xl:hidden">
+<button class="text-on-surface p-2 hover:bg-white/5 rounded-lg mr-4">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Estately</span>
+</div>
+<!-- Search Bar -->
+<div class="hidden md:flex flex-1 max-w-md mx-4">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="w-full glass-input rounded-full py-2 pl-10 pr-4 text-on-surface font-body-md text-body-md focus:outline-none placeholder-on-surface-variant/50" placeholder="Search properties, leads..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/5 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/5 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+</button>
+<button class="hidden md:flex items-center px-3 py-1.5 text-on-surface-variant hover:text-on-surface hover:bg-white/5 rounded-lg transition-colors font-body-md text-body-md">
+                    Help
+                </button>
+<div class="w-8 h-8 rounded-full ml-2 border border-white/20 overflow-hidden shrink-0 cursor-pointer">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a real estate agent, well-lit, neutral background, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAu_43TUY8-l51Yeb8JzcGsypUIBOiLxY-WDcVi1oZoJ68mC-bE_TA3_9xWYIYl1eZT-sSSQfIOX4ZJ_N54l97Mogkqd9cKsZjSHvRx-W1TnU19HAQHAa5rgbOvgoGEkhN08sCb--VMaejOUiOQKQ-5FbUdNI9mtC4WDaZoE3laxKhmOzVQqH2HHGyldDpQ2jyxoKQYkA5wuuN_0X20D7dB1OaSGRkJD0NG-m0Fng9A722VMdcKscMcPkDIGvfhkHfLJ7qY09oyA"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-container-padding flex-1 flex flex-col space-y-6 overflow-x-hidden">
+<!-- Header Section -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div>
+<h2 class="font-display-lg text-[32px] font-bold text-on-surface tracking-tight">Property Management</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage and track your entire portfolio (1,248 properties)</p>
+</div>
+<div class="flex gap-3 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none glass-panel px-4 py-2 rounded-lg flex items-center justify-center space-x-2 hover:bg-white/10 transition-colors font-data-table text-data-table text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+<span>Export</span>
+</button>
+<button class="flex-1 sm:flex-none bg-primary text-on-primary px-5 py-2 rounded-lg flex items-center justify-center space-x-2 hover:bg-primary-fixed transition-colors font-data-table text-data-table font-semibold shadow-[0_0_15px_rgba(173,198,255,0.2)]">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>New Listing</span>
+</button>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="glass-panel rounded-xl p-4 flex flex-col xl:flex-row gap-4 items-center justify-between w-full">
+<div class="flex flex-wrap gap-3 w-full xl:w-auto">
+<!-- Status Filter -->
+<div class="relative group">
+<select class="appearance-none glass-input pl-4 pr-10 py-2 rounded-lg text-on-surface font-data-table text-data-table w-full sm:w-auto cursor-pointer">
+<option value="all">All Statuses</option>
+<option value="active">Active</option>
+<option value="pending">Pending</option>
+<option value="sold">Sold</option>
+<option value="draft">Draft</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+</div>
+<!-- Type Filter -->
+<div class="relative group">
+<select class="appearance-none glass-input pl-4 pr-10 py-2 rounded-lg text-on-surface font-data-table text-data-table w-full sm:w-auto cursor-pointer">
+<option value="all">All Types</option>
+<option value="house">Single Family</option>
+<option value="condo">Condo/Townhouse</option>
+<option value="commercial">Commercial</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+</div>
+<!-- Agent Filter -->
+<div class="relative group">
+<select class="appearance-none glass-input pl-4 pr-10 py-2 rounded-lg text-on-surface font-data-table text-data-table w-full sm:w-auto cursor-pointer">
+<option value="all">Any Agent</option>
+<option value="me">Assigned to Me</option>
+<option value="team">Team A</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-3 w-full xl:w-auto justify-end">
+<span class="font-label-mono text-label-mono text-on-surface-variant">0 SELECTED</span>
+<button class="glass-panel p-2 rounded-lg text-on-surface-variant hover:text-on-surface disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+<div class="w-px h-6 bg-white/10 mx-1"></div>
+<div class="glass-panel flex rounded-lg p-1">
+<button class="p-1 rounded-md bg-white/10 text-on-surface shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="table_rows">table_rows</span>
+</button>
+<button class="p-1 rounded-md text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Data Table -->
+<div class="glass-panel rounded-xl overflow-hidden flex-1 border border-white/5">
+<div class="overflow-x-auto">
+<table class="w-full text-left whitespace-nowrap">
+<thead class="bg-white/[0.08] font-data-table text-data-table text-on-surface-variant">
+<tr>
+<th class="p-4 w-12">
+<input class="rounded border-white/20 bg-black/20 text-primary focus:ring-primary/50 focus:ring-offset-surface" type="checkbox"/>
+</th>
+<th class="p-4 font-medium tracking-wide">Property</th>
+<th class="p-4 font-medium tracking-wide">Price</th>
+<th class="p-4 font-medium tracking-wide">Status</th>
+<th class="p-4 font-medium tracking-wide text-center">Views</th>
+<th class="p-4 font-medium tracking-wide text-center">Inquiries</th>
+<th class="p-4 font-medium tracking-wide">Added</th>
+<th class="p-4 font-medium tracking-wide text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-data-table text-data-table text-on-surface divide-y divide-white/5">
+<!-- Row 1 (Active) -->
+<tr class="table-row-glass transition-colors group">
+<td class="p-4">
+<input class="rounded border-white/20 bg-black/20 text-primary focus:ring-primary/50 focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-12 rounded-lg overflow-hidden shrink-0">
+<img alt="Property thumbnail" class="w-full h-full object-cover" data-alt="Modern luxury home exterior with pool at twilight, glowing interior lights, high-end real estate photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr7lpEztWC1dGvzZVjlrZEMXf6pUnjTQ3T__K8qAr1JemjeIJ34rD332R2rJ1n3uRZ316Agy-HE4nO6K70u0twJYd-kqiNL58r3wjCxZAKxPyMEyn0iUoyjk3_SnFRW1fgGsH-UvsOvBO9Ic75vRZlnwCx47ERlZNQdOJX1jhYQLKg_XE99uMb1l67KmO94URRM0YCSIOWEttOd3HfNX5-L3KeQC5AgJVhIItkfN19duUVya0A4Pap4Nk8dGoBOwC9G3U4Wny9TA"/>
+</div>
+<div>
+<p class="font-semibold text-on-surface truncate max-w-[200px] lg:max-w-[300px]">1400 Mission St, Penthouse A</p>
+<p class="text-on-surface-variant text-[13px] truncate">San Francisco, CA 94103</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-label-mono">$3,450,000</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-medium bg-[#10B981]/15 text-[#10B981] border-l-2 border-[#10B981]">
+                                        Active
+                                    </span>
+</td>
+<td class="p-4 text-center">1,204</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-[12px] font-bold">12</span>
+</td>
+<td class="p-4 text-on-surface-variant">Oct 12, 2023</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="View Site">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="More">
+<span class="material-symbols-outlined text-[18px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 (Pending) -->
+<tr class="table-row-glass transition-colors group">
+<td class="p-4">
+<input class="rounded border-white/20 bg-black/20 text-primary focus:ring-primary/50 focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-12 rounded-lg overflow-hidden shrink-0 opacity-80">
+<img alt="Property thumbnail" class="w-full h-full object-cover" data-alt="Contemporary suburban house with manicured lawn, daytime, clear sky, modern architecture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpMBKTtLqic5wpXG1bXxiBc67UQpXiEFILgWk6wy-JBCOZz1JEtPX7lQp6vloVTSdkwFHNaJITeCAcPd7bL7sABdxzombUVi5HUIulhz4PyR01vyOR4sM5ZyK53dfS8kbWsB5ZhocsifmIfgV94TVQmzI4YhnpNL2Y5AjxlqOfNwPHUfiN3fFbz6_vUrY0nz_WRAr-Nuqus0f1Kj855o5E_boiRfviBaV7Miz2JKcVsEZ2Jgx1WSDXHVHFJIvLIcNu7n9jHxcKFw"/>
+</div>
+<div>
+<p class="font-semibold text-on-surface truncate max-w-[200px] lg:max-w-[300px]">890 Ridge Road</p>
+<p class="text-on-surface-variant text-[13px] truncate">Palo Alto, CA 94304</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-label-mono">$2,100,000</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-medium bg-[#F59E0B]/15 text-[#F59E0B] border-l-2 border-[#F59E0B]">
+                                        Pending
+                                    </span>
+</td>
+<td class="p-4 text-center">856</td>
+<td class="p-4 text-center text-on-surface-variant">3</td>
+<td class="p-4 text-on-surface-variant">Oct 05, 2023</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="View Site">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="More">
+<span class="material-symbols-outlined text-[18px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 (Sold) -->
+<tr class="table-row-glass transition-colors group">
+<td class="p-4">
+<input class="rounded border-white/20 bg-black/20 text-primary focus:ring-primary/50 focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-12 rounded-lg overflow-hidden shrink-0 opacity-60">
+<img alt="Property thumbnail" class="w-full h-full object-cover grayscale-[30%]" data-alt="Interior view of a modern living room with large windows, bright natural light, minimalist furniture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhTeo3aDEUSK9uYrLgcMXNWEHrBMInK4Yam33bTP2sdvgD9_37Mn2UgPKNzbFgg-Gwzu3YCLZFRBpz3bdkS3pc-xgWko2aDMmDEWrMhnbS9QXC5rlJ3Z_TJxaWKQpw0Mu0Ay7ymvROrJrO8nmnOAPvAXv9IzKWhiXWgveTfHfWmH81DpYm97Ag6f-eEoLETIf-NbbcfZgrH6uh6SetuyNsXrJi5KrIo_bvdld71zZ0FjTFFa4cC2ftilppp_XDyQV3I8wm3OZQrg"/>
+</div>
+<div>
+<p class="font-semibold text-on-surface-variant truncate max-w-[200px] lg:max-w-[300px]">45 Ocean Drive, Unit 12B</p>
+<p class="text-outline-variant text-[13px] truncate">Miami, FL 33139</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-label-mono text-on-surface-variant">$1,850,000</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-medium bg-[#EF4444]/10 text-[#EF4444] border-l-2 border-[#EF4444]">
+                                        Sold
+                                    </span>
+</td>
+<td class="p-4 text-center text-on-surface-variant">-</td>
+<td class="p-4 text-center text-on-surface-variant">-</td>
+<td class="p-4 text-on-surface-variant">Sep 28, 2023</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[18px]" data-icon="info">info</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface transition-colors" title="More">
+<span class="material-symbols-outlined text-[18px]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 (Draft) -->
+<tr class="table-row-glass transition-colors group">
+<td class="p-4">
+<input class="rounded border-white/20 bg-black/20 text-primary focus:ring-primary/50 focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="w-16 h-12 rounded-lg bg-surface-container-high border border-white/10 shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="image">image</span>
+</div>
+<div>
+<p class="font-semibold text-on-surface truncate max-w-[200px] lg:max-w-[300px]">New Listing (Incomplete)</p>
+<p class="text-on-surface-variant text-[13px] truncate">123 Pine St, Seattle, WA</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-label-mono text-on-surface-variant">--</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-medium bg-white/5 text-on-surface-variant border-l-2 border-outline-variant">
+                                        Draft
+                                    </span>
+</td>
+<td class="p-4 text-center text-on-surface-variant">0</td>
+<td class="p-4 text-center text-on-surface-variant">0</td>
+<td class="p-4 text-on-surface-variant">Oct 14, 2023</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 rounded-md hover:bg-white/10 text-primary hover:text-primary-fixed transition-colors" title="Continue Editing">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="p-1.5 rounded-md hover:bg-[#EF4444]/20 text-on-surface-variant hover:text-[#EF4444] transition-colors" title="Delete">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="bg-white/[0.03] border-t border-white/5 p-4 flex items-center justify-between font-data-table text-data-table">
+<p class="text-on-surface-variant">Showing 1 to 10 of 1,248 entries</p>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-md glass-panel text-on-surface-variant hover:text-on-surface disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-md bg-primary text-on-primary font-medium flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface font-medium flex items-center justify-center transition-colors">2</button>
+<button class="w-8 h-8 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface font-medium flex items-center justify-center transition-colors">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="w-8 h-8 rounded-md hover:bg-white/10 text-on-surface-variant hover:text-on-surface font-medium flex items-center justify-center transition-colors">125</button>
+<button class="p-2 rounded-md glass-panel text-on-surface hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
